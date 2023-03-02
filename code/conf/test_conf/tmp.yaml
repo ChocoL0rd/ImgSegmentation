@@ -1,0 +1,8 @@
+illustrate: True
+
+metrics: [
+  {
+    name: "dice",
+    threshold: 0
+  }
+]

@@ -1,0 +1,10 @@
+name: "base_unet"
+bilinear: True
+device: ${device}
+checkpoint: False
+
+first_ch: 32
+down_ch: [64, 128, 256]
+middle_ch: 512
+up_ch: [256, 128, 64]
+last_ch: 32

@@ -1,0 +1,71 @@
+epochs: 1
+val_period: 10
+batch_size: 8
+
+optimizer:
+  name: "adam"
+  lr: 0.001
+  weight_decay: 0
+
+loss: [
+  {
+    name: "soft_dice",
+    weight: 1
+  },
+#  {
+#    name: "bce",
+#    weight: 0.01
+#  }
+]
+
+metrics: [
+  {
+    name: "dice",
+    threshold: 0
+  }
+]
+
+
+dataset:
+  device: ${device}
+  debug: False
+
+  train_img_dir: ${storage_path}/${train_img_dir_name}
+  train_mask_dir: ${storage_path}/${train_mask_dir_name}
+  val_img_dir: ${storage_path}/${val_img_dir_name}
+  val_mask_dir: ${storage_path}/${val_mask_dir_name}
+
+  train_proportion: 0.5
+
+  augmentation: [
+    {
+      name: "coarse_dropout",
+      max_holes: 5,
+      max_width: 8,
+      max_height: 8,
+      fill_value: 0
+    },
+    {
+      name: "channel_shuffle",
+      p: 0.5
+    },
+    {
+      name: "vertical_flip",
+      p: 0.5
+    },
+    {
+      name: "horizontal_flip",
+      p: 0.5
+    },
+    {
+      name: "blur",
+      p: 0.5
+    },
+    {
+      name: "color_jitter",
+      brightness: 0.1,
+      contrast: 0.3,
+      saturation: 0.3,
+      p: 0.5
+    }
+  ]

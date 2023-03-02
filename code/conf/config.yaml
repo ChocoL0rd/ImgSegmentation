@@ -1,0 +1,16 @@
+
+storage_path: ${hydra:runtime.cwd}/../data
+
+train_img_dir_name: imgs
+train_mask_dir_name: segmented_imgs
+val_img_dir_name: imgs
+val_mask_dir_name: segmented_imgs
+
+device: "cuda:0"
+
+defaults:
+  - _self_
+  - model_conf: tmp
+  - test_conf: tmp
+  - train_conf: tmp
+
