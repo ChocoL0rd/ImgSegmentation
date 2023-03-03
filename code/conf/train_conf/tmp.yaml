@@ -1,6 +1,6 @@
-epochs: 1
+epochs: 30
 val_period: 10
-batch_size: 8
+batch_size: 10
 
 optimizer:
   name: "adam"
@@ -9,20 +9,33 @@ optimizer:
 
 loss: [
   {
-    name: "soft_dice",
-    weight: 1
+    name: "negative_ln_dice",
+    weight: 0.25
   },
-#  {
-#    name: "bce",
-#    weight: 0.01
-#  }
+  {
+    name: "bce",
+    weight: 0.75
+  }
 ]
 
 metrics: [
   {
     name: "dice",
     threshold: 0
-  }
+  },
+  {
+    name: "dice",
+    threshold: 0.1
+  },
+  {
+    name: "dice",
+    threshold: 0.3
+  },
+  {
+    name: "dice",
+    threshold: 0.5
+  },
+
 ]
 
 
@@ -39,11 +52,22 @@ dataset:
 
   augmentation: [
     {
+      name: "channel_dropout",
+      p: 0.5
+    },
+    {
       name: "coarse_dropout",
-      max_holes: 5,
+      max_holes: 4,
       max_width: 8,
       max_height: 8,
-      fill_value: 0
+      fill_value: 255
+    },
+    {
+      name: "coarse_dropout",
+      max_holes: 10,
+      max_width: 6,
+      max_height: 6,
+      fill_value: 254
     },
     {
       name: "channel_shuffle",
@@ -64,8 +88,8 @@ dataset:
     {
       name: "color_jitter",
       brightness: 0.1,
-      contrast: 0.3,
-      saturation: 0.3,
+      contrast: 0.5,
+      saturation: 0.5,
       p: 0.5
     }
   ]

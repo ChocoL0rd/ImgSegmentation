@@ -1,8 +1,37 @@
-illustrate: True
+thresholds: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7]
+batch_size: 10
 
 metrics: [
   {
     name: "dice",
     threshold: 0
+  },
+  {
+    name: "dice",
+    threshold: 0.1
+  },
+  {
+    name: "dice",
+    threshold: 0.2
+  },
+  {
+    name: "dice",
+    threshold: 0.3
+  },
+  {
+    name: "dice",
+    threshold: 0.4
+  },
+  {
+    name: "dice",
+    threshold: 0.5
+  },
+  {
+    name: "dice",
+    threshold: 0.6
+  },
+  {
+    name: "dice",
+    threshold: 0.7
   }
 ]

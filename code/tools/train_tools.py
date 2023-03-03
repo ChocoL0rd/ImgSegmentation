@@ -23,7 +23,7 @@ __all__ = [
     "cfg2datasets",
     "cfg2loss",
     "cfg2optimizer",
-    "fit",
+    "cfg2fit",
     "ImgMaskSet",
 ]
 
@@ -62,6 +62,7 @@ class ImgMaskSet(Dataset):
         log.info(f"Creating {self.log_name} dataset on device {self.device}: \n"
                      f"Path to image dir: {self.img_dir_path} \n"
                      f"Path to mask dir: {self.mask_dir_path}")
+        self.apply_trfms = True
 
         if img_list is None:
             log.info(f"List of images isn't specified.\n"
@@ -72,7 +73,7 @@ class ImgMaskSet(Dataset):
         else:
             self.img_list = [i[:-5] for i in img_list]  # deleted extension .jpeg
 
-        self.transforms = transforms
+        self.trfms = transforms
         self.size = len(self.img_list)
 
         log.info(f"{self.log_name} dataset is created. Size: {self.size}")
@@ -95,13 +96,13 @@ class ImgMaskSet(Dataset):
         with Image.open(mask_path) as mask_im:
             mask = np.array(mask_im.split()[-1])  # retrieve transparent mask
 
-        if self.transforms is None:
+        if self.trfms is None or self.apply_trfms is False:
             img_tensor = img2tensor(img).to(torch.float32)
             mask_tensor = img2tensor(mask).to(torch.float32)
             return img_tensor.to(self.device), mask_tensor.to(self.device)
 
         # apply transformations
-        transformed = self.transforms(image=img, mask=mask)
+        transformed = self.trfms(image=img, mask=mask)
         self.local_log.debug("Transform is applied.")
 
         img_tensor = img2tensor(transformed["image"]).to(torch.float32)
@@ -196,6 +197,10 @@ def cfg2mini_loss(cfg):
         def loss(x, y):
             return (1 - (x*y).sum([-1, -2])/(x.sum([-1, -2])+y.sum([-1, -2]) - (x*y).sum([-1, -2]))).mean()
         return loss
+    elif name == "negative_ln_dice":
+        def loss(x, y):
+            return -torch.log(2*(x*y).sum([-1, -2])/(x.sum([-1, -2])+y.sum([-1, -2]))).mean()
+        return loss
     else:
         log.critical(f"Loss {name} is wrong.")
         raise Exception(f"Loss {name} is wrong.")
@@ -224,25 +229,9 @@ def cfg2optimizer(model, cfg):
         raise Exception(msg)
 
 
-def fit(model, cfg):
-    """
-    trains model
-    """
-    train_cfg = cfg.train_conf
-    train_dataset, val_dataset = cfg2datasets(cfg)
-    train_loader = DataLoader(dataset=train_dataset,
-                              batch_size=train_cfg.batch_size,
-                              drop_last=True,
-                              shuffle=True)
-    val_loader = DataLoader(dataset=val_dataset,
-                            batch_size=train_cfg.batch_size)
-
-    val_period = train_cfg.val_period
-    epochs = train_cfg.epochs
-
-    loss = cfg2loss(train_cfg.loss)
-    optimizer = cfg2optimizer(model, train_cfg.optimizer)
-    metrics = cfg2metric_list(train_cfg.metrics)
+def fit(epochs, val_period,
+        model, loss, metrics, optimizer,
+        train_loader, val_loader):
 
     for epoch in range(epochs):
         log.info(f"===== EPOCH: {epoch} =====")
@@ -265,6 +254,29 @@ def fit(model, cfg):
                     loss_value = loss(predicted_batch, mask_batch)
                     log.info(f"Loss: {loss_value.data}.")
                     for metric_name, metric in metrics:
-                        log.info(f"Metric {metric_name}: {metric(predicted_batch, mask_batch).data}")
+                        log.info(f"Metric {metric_name}:\n"
+                                 f"{metric(predicted_batch, mask_batch).data.reshape([-1]).tolist()}")
 
-    return val_loader
+
+def cfg2fit(model, train_dataset: ImgMaskSet, val_dataset: ImgMaskSet, cfg):
+    """
+    trains model
+    """
+    train_cfg = cfg.train_conf
+    train_loader = DataLoader(dataset=train_dataset,
+                              batch_size=train_cfg.batch_size,
+                              drop_last=True,
+                              shuffle=True)
+    val_loader = DataLoader(dataset=val_dataset,
+                            batch_size=train_cfg.batch_size)
+
+    val_period = train_cfg.val_period
+    epochs = train_cfg.epochs
+
+    loss = cfg2loss(train_cfg.loss)
+    optimizer = cfg2optimizer(model, train_cfg.optimizer)
+    metrics = cfg2metric_list(train_cfg.metrics)
+
+    fit(epochs=epochs, val_period=val_period,
+        model=model, loss=loss, metrics=metrics, optimizer=optimizer,
+        train_loader=train_loader, val_loader=val_loader)

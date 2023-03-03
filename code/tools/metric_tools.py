@@ -24,7 +24,7 @@ def cfg2metric(cfg):
         def set_threshold(x):
             new_x = x.clone()
             new_x[new_x > threshold] = 1
-            new_x[new_x < threshold] = 0
+            new_x[new_x <= threshold] = 0
             return new_x
     else:
         msg = f"In metric {name} threshold {threshold} is wrong. " \

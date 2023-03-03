@@ -1,5 +1,5 @@
-epochs: 1
-val_period: 10
+epochs: 20
+val_period: 5
 batch_size: 8
 
 optimizer:
@@ -44,6 +44,12 @@ dataset:
       max_width: 8,
       max_height: 8,
       fill_value: 0
+    },
+    {
+      name: "pixel_dropout",
+      per_channel: True,
+      dropout_prob: 0.01,
+      p: 0.5
     },
     {
       name: "channel_shuffle",

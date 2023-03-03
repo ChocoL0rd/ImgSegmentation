@@ -4,12 +4,16 @@ from hydra.utils import get_original_cwd, to_absolute_path
 from omegaconf import OmegaConf, open_dict
 import logging
 import hydra.core.hydra_config
+import numpy as np
 
 import torch
 
 from tools.train_tools import *
 from tools.build_model import *
 from tools.test_tools import *
+
+np.random.seed(0)
+torch.manual_seed(0)
 
 log = logging.getLogger(__name__)
 
@@ -20,8 +24,10 @@ def my_app(cfg):
     output_dir = hydra_cfg.runtime.output_dir
     OmegaConf.resolve(cfg)
     model = cfg2model(cfg)
-    val_loader = fit(model, cfg)
-    test(model, val_loader, os.path.join(output_dir, "val"), cfg)
+    train_dataset, val_dataset = cfg2datasets(cfg)
+    cfg2fit(model, train_dataset, val_dataset, cfg)
+    test(model, train_dataset, output_dir, cfg)
+    test(model, val_dataset, output_dir, cfg)
     torch.save(model.state_dict(), os.path.join(output_dir, "model.pt"))
 
 

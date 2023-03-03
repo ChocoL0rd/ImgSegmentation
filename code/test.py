@@ -74,7 +74,7 @@ import cv2 as cv
 #
 # print(a.sum([-1, -2]).shape)
 
-a, b = [[1,2], [4, 5], [4, 5]]
-
-print(a, b)
+# a, b = [[1,2], [4, 5], [4, 5]]
+#
+# print(a, b)
 

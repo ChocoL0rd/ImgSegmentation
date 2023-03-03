@@ -1,12 +1,13 @@
 from .models.base_unet import BaseUNet
-
+from .models.res_unet import ResUNet
 
 __all__ = [
     "cfg2model"
 ]
 
 name2model_class = {
-    "base_unet": BaseUNet
+    "base_unet": BaseUNet,
+    "res_unet": ResUNet
 }
 
 
