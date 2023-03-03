@@ -12,6 +12,9 @@ from tools.train_tools import *
 from tools.build_model import *
 from tools.test_tools import *
 
+import random
+
+random.seed(0)
 np.random.seed(0)
 torch.manual_seed(0)
 

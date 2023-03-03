@@ -188,23 +188,34 @@ def cfg2datasets(cfg):
 def cfg2mini_loss(cfg):
     name = cfg.name
     if name == "bce":
-        return nn.BCELoss()
+        loss = nn.BCELoss()
     elif name == "soft_dice":
         def loss(x, y):
-            return (1 - 2*(x*y).sum([-1, -2])/(x.sum([-1, -2])+y.sum([-1, -2]))).mean()
-        return loss
+            return 1 - (2*(x*y).sum([-1, -2])/(x.sum([-1, -2])+y.sum([-1, -2]))).mean()
+
     elif name == "soft_jaccard":
         def loss(x, y):
-            return (1 - (x*y).sum([-1, -2])/(x.sum([-1, -2])+y.sum([-1, -2]) - (x*y).sum([-1, -2]))).mean()
-        return loss
+            return 1 - ((x*y).sum([-1, -2])/(x.sum([-1, -2])+y.sum([-1, -2]) - (x*y).sum([-1, -2]))).mean()
     elif name == "negative_ln_dice":
         def loss(x, y):
             return -torch.log(2*(x*y).sum([-1, -2])/(x.sum([-1, -2])+y.sum([-1, -2]))).mean()
-        return loss
+    elif name == "attentive_dice":
+        def loss(x, y):
+            field = abs(x-y) > cfg.receptive_field
+            new_x = x * field
+            new_y = y * field
+            return 1 - (2*(new_x*new_y).sum([-1, -2])/(0.000001 + new_x.sum([-1, -2])+new_y.sum([-1, -2]))).mean()
+    elif name == "negative_ln_attentive_dice":
+        def loss(x, y):
+            field = abs(x - y) > cfg.receptive_field
+            new_x = x * field
+            new_y = y * field
+            return -torch.log(2*(new_x*new_y).sum([-1, -2])/(0.000001 + new_x.sum([-1, -2])+new_y.sum([-1, -2]))).mean()
     else:
         log.critical(f"Loss {name} is wrong.")
         raise Exception(f"Loss {name} is wrong.")
 
+    return loss
 
 def cfg2loss(cfg):
     def loss(x, y):

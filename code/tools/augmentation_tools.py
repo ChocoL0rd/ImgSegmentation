@@ -11,6 +11,7 @@ from albumentations.augmentations.geometric.resize import Resize
 from albumentations.augmentations.transforms import ColorJitter
 from albumentations.augmentations.blur.transforms import Blur
 from albumentations.augmentations.transforms import ToGray
+from albumentations.augmentations.transforms import RandomShadow
 
 import logging
 
@@ -22,6 +23,7 @@ __all__ = [
     "cfg2augmentation"
 ]
 
+
 def cfg2transform(cfg):
     """
     Convert config to transformation
@@ -31,7 +33,8 @@ def cfg2transform(cfg):
         trfm = CoarseDropout(max_holes=cfg.max_holes,
                              max_height=cfg.max_height,
                              max_width=cfg.max_width,
-                             fill_value=cfg.fill_value)
+                             fill_value=cfg.fill_value,
+                             p=cfg.p)
     elif name == "pixel_dropout":
         trfm = PixelDropout(dropout_prob=cfg.dropout_prob,
                             per_channel=cfg.per_channel,
@@ -44,6 +47,7 @@ def cfg2transform(cfg):
     elif name == "random_crop":
         trfm = RandomCrop(height=cfg.height,
                           width=cfg.width,
+                          always_apply=cfg.always_apply,
                           p=cfg.p)
     elif name == "vertical_flip":
         trfm = VerticalFlip(p=cfg.p)
@@ -62,6 +66,13 @@ def cfg2transform(cfg):
                            p=cfg.p)
     elif name == "to_gray":
         trfm = ToGray(p=cfg.p)
+
+    elif name == "random_shadow":
+        trfm = RandomShadow(shadow_roi=cfg.shadow_roi,
+                            num_shadows_lower=cfg.num_shadows_lower,
+                            num_shadows_upper=cfg.num_shadows_upper,
+                            shadow_dimension=cfg.shadow_dimension,
+                            p=cfg.p)
     else:
         msg = f"Transform {name} is wrong."
         log.critical(msg)

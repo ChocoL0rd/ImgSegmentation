@@ -1,26 +1,31 @@
 import albumentations as A
 import cv2 as cv
-# from PIL import Image
+from PIL import Image
 # import numpy as np
-# import torch
+import torch
 # from torch import nn
 # from albumentations.augmentations.dropout.channel_dropout import ChannelDropout
 # import matplotlib.pyplot as plt
 #
-# from torchvision.transforms.transforms import ToTensor
+from torchvision.transforms.transforms import ToTensor
 #
 # torch.set_printoptions(profile="full")
-# # img = cv.imread("img.jpeg")
-# # mask = cv.imread("mask.jpeg")
-# #
-# # img = cv.cvtColor(img, cv.COLOR_BGR2RGB)
-# # img_tensor = ToTensor()(img).to(torch.float32)
-# #
-# # mask_tensor = ToTensor()(mask).to(torch.float32)
+# img = cv.imread("img.jpeg")
+# mask = cv.imread("mask.jpeg")
 #
-# # img = cv.imread("img0_001.png")
-# # img = ToTensor()(Image.open("img0_001.png"))
-# #
+# img = cv.cvtColor(img, cv.COLOR_BGR2RGB)
+# img_tensor = ToTensor()(img).to(torch.float32)
+#
+# mask_tensor = ToTensor()(mask).to(torch.float32)
+#
+# img = ToTensor()(Image.open("../data/imgs/img0_001.jpeg"))
+#
+# print(img)
+
+a = torch.Tensor([1, 2, 4])
+b = a > 3
+print(a*b)
+
 # # new_img = img[:-1]
 # # mask = img[-1:]
 # # print(new_img)
