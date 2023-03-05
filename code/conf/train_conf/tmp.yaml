@@ -1,6 +1,6 @@
 epochs: 30
 val_period: 10
-batch_size: 8
+batch_size: 4
 
 optimizer:
   name: "adam"
@@ -10,11 +10,11 @@ optimizer:
 loss: [
   {
     name: "negative_ln_dice",
-    weight: 0.4
+    weight: 0.2
   },
   {
     name: "bce",
-    weight: 0.6
+    weight: 0.8
   }
 ]
 
@@ -66,12 +66,32 @@ dataset:
 #      p: 1
 #    },
     {
+      name: "random_shadow",
+      x_min: 0,
+      y_min: 0.1,
+      x_max: 1,
+      y_max: 0.4,
+      num_shadows_lower: 1,
+      num_shadows_upper: 2,
+      always_apply: False,
+      shadow_dimension: 8,
+      p: 0.2
+    },
+    {
+      name: "grid_distortion",
+      p: 0.1
+    },
+    {
+      name: "elastic_transform",
+      p: 0.1
+    },
+    {
       name: "channel_dropout",
-      p: 0.3
+      p: 0.1
     },
     {
       name: "coarse_dropout",
-      max_holes: 10,
+      max_holes: 5,
       max_width: 5,
       max_height: 5,
       fill_value: 0.984,
@@ -79,23 +99,7 @@ dataset:
     },
     {
       name: "coarse_dropout",
-      max_holes: 10,
-      max_width: 5,
-      max_height: 5,
-      fill_value: 0.984,
-      p: 0.1
-    },
-    {
-      name: "coarse_dropout",
-      max_holes: 10,
-      max_width: 5,
-      max_height: 5,
-      fill_value: 0,
-      p: 0.1
-    },
-    {
-      name: "coarse_dropout",
-      max_holes: 10,
+      max_holes: 5,
       max_width: 5,
       max_height: 5,
       fill_value: 0,
@@ -103,9 +107,23 @@ dataset:
     },
     {
       name: "pixel_dropout",
-      dropout_prob: 0.01,
+      dropout_prob: 0.005,
       per_channel: True,
       drop_value: 0.984,
+      p: 0.1
+    },
+    {
+      name: "pixel_dropout",
+      dropout_prob: 0.005,
+      per_channel: True,
+      drop_value: 0,
+      p: 0.1
+    },
+    {
+      name: "pixel_dropout",
+      dropout_prob: 0.005,
+      per_channel: True,
+      drop_value: 0.5,
       p: 0.1
     },
     {
@@ -124,4 +142,8 @@ dataset:
       name: "blur",
       p: 0.2
     },
+    {
+      name: "to_gray",
+      p: 0.1
+    }
   ]

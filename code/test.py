@@ -97,7 +97,7 @@ from torch.nn import functional as F
 # b = F.interpolate(a, size=[21, 21], mode='bilinear')
 # print(b.shape)
 
-for i in range(100, 600, 2):
+for i in range(10, 60, 2):
     print("{\n"
           f"name: {'dice'}, \n"
           f"threshold: {i/100}\n"

@@ -12,6 +12,10 @@ from albumentations.augmentations.transforms import ColorJitter
 from albumentations.augmentations.blur.transforms import Blur
 from albumentations.augmentations.transforms import ToGray
 from albumentations.augmentations.transforms import RandomShadow
+from albumentations.augmentations.geometric.transforms import GridDistortion
+from albumentations.augmentations.geometric.transforms import ElasticTransform
+
+import cv2 as cv
 
 import logging
 
@@ -68,11 +72,20 @@ def cfg2transform(cfg):
         trfm = ToGray(p=cfg.p)
 
     elif name == "random_shadow":
-        trfm = RandomShadow(shadow_roi=cfg.shadow_roi,
-                            num_shadows_lower=cfg.num_shadows_lower,
+        trfm = RandomShadow(shadow_roi=[cfg.x_min, cfg.y_min, cfg.x_max, cfg.y_max],
+                                num_shadows_lower=cfg.num_shadows_lower,
                             num_shadows_upper=cfg.num_shadows_upper,
                             shadow_dimension=cfg.shadow_dimension,
+                            always_apply=cfg.always_apply,
                             p=cfg.p)
+    elif name == "grid_distortion":
+        trfm = GridDistortion(p=cfg.p,
+                              # border_mode=cv.BORDER_REPLICATE
+                              )
+    elif name == "elastic_transform":
+        trfm = ElasticTransform(p=cfg.p,
+                                # border_mode=cv.BORDER_REPLICATE
+                                )
     else:
         msg = f"Transform {name} is wrong."
         log.critical(msg)

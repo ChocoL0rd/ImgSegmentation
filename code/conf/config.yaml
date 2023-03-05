@@ -7,8 +7,8 @@ val_mask_dir_name: segmented_imgs
 
 device: "cuda:0"
 
-load_pretrained: True
-pretrained_path: outputs/2023-03-05/20-17-58
+load_pretrained: False
+#pretrained_path: outputs/2023-03-05/22-54-10
 
 defaults:
   - _self_
