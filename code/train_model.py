@@ -27,6 +27,8 @@ def my_app(cfg):
     output_dir = hydra_cfg.runtime.output_dir
     OmegaConf.resolve(cfg)
     model = cfg2model(cfg)
+    if cfg.load_pretrained:
+        model.load_state_dict(torch.load(os.path.join(cfg.pretrained_path, "model.pt")))
     train_dataset, val_dataset = cfg2datasets(cfg)
     cfg2fit(model, train_dataset, val_dataset, cfg)
     test(model, train_dataset, output_dir, cfg)

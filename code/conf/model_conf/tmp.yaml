@@ -1,10 +1,11 @@
-name: "base_unet"
-bilinear: True
+name: "backboned_unet"
 device: ${device}
-checkpoint: False
 
-first_ch: 32
-down_ch: [64, 128, 256]
-middle_ch: 512
-up_ch: [256, 128, 64]
-last_ch: 32
+backbone_name: 'vgg19'
+pretrained: True
+encoder_freeze: True
+classes: 1
+decoder_filters: [256, 128, 64, 32, 16]
+parametric_upsampling: False
+shortcut_features: 'default'
+decoder_use_batchnorm: True

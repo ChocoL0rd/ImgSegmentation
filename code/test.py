@@ -8,7 +8,8 @@ import torch
 # import matplotlib.pyplot as plt
 #
 from torchvision.transforms.transforms import ToTensor
-#
+from torch.nn import functional as F
+
 # torch.set_printoptions(profile="full")
 # img = cv.imread("img.jpeg")
 # mask = cv.imread("mask.jpeg")
@@ -22,9 +23,9 @@ from torchvision.transforms.transforms import ToTensor
 #
 # print(img)
 
-a = torch.Tensor([1, 2, 4])
-b = a > 3
-print(a*b)
+# a = torch.Tensor([1, 2, 4])
+# b = a > 3
+# print(a*b)
 
 # # new_img = img[:-1]
 # # mask = img[-1:]
@@ -82,4 +83,22 @@ print(a*b)
 # a, b = [[1,2], [4, 5], [4, 5]]
 #
 # print(a, b)
+#
+# from tools.train_tools import ImgMaskSet
+#
+# dataset = ImgMaskSet(img_dir_path="../data/imgs", mask_dir_path="../data/segmented_imgs",
+#            transforms=None, log_name="just",
+#            device=torch.device("cpu"), img_list=None)
+#
+# for img, mask in dataset:
+#     print(img.min(), img.max(), mask.min(), mask.max())
 
+# a = torch.rand([5, 3, 11, 11])
+# b = F.interpolate(a, size=[21, 21], mode='bilinear')
+# print(b.shape)
+
+for i in range(100, 600, 2):
+    print("{\n"
+          f"name: {'dice'}, \n"
+          f"threshold: {i/100}\n"
+          "},")
