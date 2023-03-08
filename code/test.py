@@ -97,8 +97,27 @@ from torch.nn import functional as F
 # b = F.interpolate(a, size=[21, 21], mode='bilinear')
 # print(b.shape)
 
-for i in range(10, 60, 2):
-    print("{\n"
-          f"name: {'dice'}, \n"
-          f"threshold: {i/100}\n"
-          "},")
+# for i in range(0, 60, 2):
+#     print("{\n"
+#           f"name: {'dice'}, \n"
+#           f"threshold: {i/100}\n"
+#           "},")
+#
+#
+# for i in range(0, 60, 2):
+#     print("{\n"
+#           f"name: {'jaccard'}, \n"
+#           f"threshold: {i/100}\n"
+#           "},")
+#
+# print([i/100 for i in range(0, 60, 2)])
+
+# from torchvision import models
+# resnet = models.resnet101()
+# # print(resnet.state_dict())
+# print(resnet)
+
+
+a = []
+a.append({"djfd": 314})
+print(a)

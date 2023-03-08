@@ -1,110 +1,21 @@
-thresholds: [0, 0.5]
+thresholds: [0]
 batch_size: 8
 
 metrics: [
-    {
-        name: dice,
-        threshold: 0
-    },
-    {
-        name: dice,
-        threshold: 0.1
-    },
-    {
-        name: dice,
-        threshold: 0.12
-    },
-    {
-        name: dice,
-        threshold: 0.14
-    },
-    {
-        name: dice,
-        threshold: 0.16
-    },
-    {
-        name: dice,
-        threshold: 0.18
-    },
-    {
-        name: dice,
-        threshold: 0.2
-    },
-    {
-        name: dice,
-        threshold: 0.22
-    },
-    {
-        name: dice,
-        threshold: 0.24
-    },
-    {
-        name: dice,
-        threshold: 0.26
-    },
-    {
-        name: dice,
-        threshold: 0.28
-    },
-    {
-        name: dice,
-        threshold: 0.3
-    },
-    {
-        name: dice,
-        threshold: 0.32
-    },
-    {
-        name: dice,
-        threshold: 0.34
-    },
-    {
-        name: dice,
-        threshold: 0.36
-    },
-    {
-        name: dice,
-        threshold: 0.38
-    },
-    {
-        name: dice,
-        threshold: 0.4
-    },
-    {
-        name: dice,
-        threshold: 0.42
-    },
-    {
-        name: dice,
-        threshold: 0.44
-    },
-    {
-        name: dice,
-        threshold: 0.46
-    },
-    {
-        name: dice,
-        threshold: 0.48
-    },
-    {
-        name: dice,
-        threshold: 0.5
-    },
-    {
-        name: dice,
-        threshold: 0.52
-    },
-    {
-        name: dice,
-        threshold: 0.54
-    },
-    {
-        name: dice,
-        threshold: 0.56
-    },
-    {
-        name: dice,
-        threshold: 0.58
-    },
-
+  {
+    metric: "dice",
+    thresholds: [0.0, 0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16,
+                 0.18, 0.2, 0.22, 0.24, 0.26, 0.28, 0.3, 0.32, 0.34,
+                 0.36, 0.38, 0.4, 0.42, 0.44, 0.46, 0.48, 0.5, 0.52,
+                 0.54, 0.56, 0.58],
+    stats: ["mean", "max", "std"]
+  },
+  {
+    metric: "jaccard",
+    thresholds: [ 0.0, 0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16,
+                  0.18, 0.2, 0.22, 0.24, 0.26, 0.28, 0.3, 0.32, 0.34,
+                  0.36, 0.38, 0.4, 0.42, 0.44, 0.46, 0.48, 0.5, 0.52,
+                  0.54, 0.56, 0.58 ],
+    stats: [ "mean", "max", "std"]
+  }
 ]

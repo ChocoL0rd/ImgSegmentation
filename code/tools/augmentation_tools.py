@@ -14,6 +14,7 @@ from albumentations.augmentations.transforms import ToGray
 from albumentations.augmentations.transforms import RandomShadow
 from albumentations.augmentations.geometric.transforms import GridDistortion
 from albumentations.augmentations.geometric.transforms import ElasticTransform
+from albumentations.augmentations.geometric.rotate import RandomRotate90
 
 import cv2 as cv
 
@@ -86,6 +87,8 @@ def cfg2transform(cfg):
         trfm = ElasticTransform(p=cfg.p,
                                 # border_mode=cv.BORDER_REPLICATE
                                 )
+    elif name == "random_rotate_90":
+        trfm = RandomRotate90(cfg.p)
     else:
         msg = f"Transform {name} is wrong."
         log.critical(msg)
