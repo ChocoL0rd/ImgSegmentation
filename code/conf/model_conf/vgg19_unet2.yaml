@@ -1,0 +1,11 @@
+name: "vgg19_unet"
+device: ${device}
+pretrained: True
+
+encoder_freeze: [False, False, False, False, False]
+
+middle_chnls: 512
+up_chnls: [256, 128, 64, 32, 16]
+use_bn: [True, True, True, True, True]
+drop_values: [0, 0, 0, 0, 0]
+modes: ["bilinear", "bilinear", "bilinear", "bilinear", "bilinear"]

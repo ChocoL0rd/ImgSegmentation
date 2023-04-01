@@ -43,11 +43,13 @@ dataset:
       max_holes: 5,
       max_width: 8,
       max_height: 8,
-      fill_value: 0
+      fill_value: 0,
+      p: 0.5
     },
     {
       name: "pixel_dropout",
       per_channel: True,
+      drop_value: 0,
       dropout_prob: 0.01,
       p: 0.5
     },
@@ -56,11 +58,7 @@ dataset:
       p: 0.5
     },
     {
-      name: "vertical_flip",
-      p: 0.5
-    },
-    {
-      name: "horizontal_flip",
+      name: "channel_dropout",
       p: 0.5
     },
     {
@@ -69,7 +67,7 @@ dataset:
     },
     {
       name: "color_jitter",
-      brightness: 0.1,
+      brightness: 0.5,
       contrast: 0.3,
       saturation: 0.3,
       p: 0.5

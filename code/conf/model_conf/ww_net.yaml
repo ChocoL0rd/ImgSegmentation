@@ -1,0 +1,41 @@
+name: "ww_net"
+device: ${device}
+
+models: [
+  {
+    pretrained_model: True,
+    pretrained_path: outputs/2023-03-11/23-24-19,
+
+    full_freeze: True,
+    name: "resnet101_unet",
+    pretrained: True, # pretrained backbone
+    device: "cuda:0",
+
+    freeze_encoder: [ True, True, True, True, True ],
+    up_chnls: [ 512, 256, 128, 64, 32 ],
+    use_bn: [ True, True, True, True, True ], # use batch norms
+    drop_values: [ 0, 0, 0, 0, 0 ],
+    modes: [ "bilinear", "bilinear", "bilinear", "bilinear", "bilinear" ]
+  },
+  {
+    pretrained_model: False,
+
+    full_freeze: False,
+    name: "multi_depth_unet",
+    device: "cuda:0",
+
+    in_ch: 35, # channels of original image + last channels of previous model's output
+    in_drop_value: 0,
+
+    first_ch: 32,
+    down_ch: [ 64, 128, 256, 512 ],
+    down_drop_values: [ 0, 0, 0, 0, 0 ], # includes drop value for first channel
+
+    middle_ch: 1024,
+    up_ch: [ 512, 256, 128, 64 ],
+    up_drop_values: [ 0, 0, 0, 0, 0 ],
+    mode: [ "bilinear", "bilinear", "bilinear", "bilinear", "bilinear" ],
+
+    last_ch: 32
+  },
+]

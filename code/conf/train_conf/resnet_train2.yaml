@@ -1,0 +1,56 @@
+epochs: 50
+val_period: 50
+batch_size: 8
+optimizer:
+  name: adam
+  lr: 0.001
+  weight_decay: 0
+loss:
+- name: negative_ln_dice
+  weight: 0.2
+- name: bce
+  weight: 0.8
+#- name: soft_jaccard
+#  weight: 0.01
+metrics:
+- name: dice
+  threshold: 0
+- name: jaccard
+  threshold: 0
+dataset:
+  device: ${device}
+  debug: false
+  train_img_dir: ${storage_path}/${train_img_dir_name}
+  train_mask_dir: ${storage_path}/${train_mask_dir_name}
+  val_img_dir: ${storage_path}/${val_img_dir_name}
+  val_mask_dir: ${storage_path}/${val_mask_dir_name}
+  train_proportion: 0.5
+  augmentation:
+  - name: coarse_dropout
+    max_holes: 10
+    max_width: 5
+    max_height: 5
+    fill_value: 255
+    p: 0.1
+  - name: coarse_dropout
+    max_holes: 10
+    max_width: 5
+    max_height: 5
+    fill_value: 0
+    p: 0.1
+  - name: color_jitter
+    brightness: 0
+    contrast: 0.3
+    saturation: 0.3
+    p: 0.1
+  - name: channel_dropout
+    p: 0.3
+  - name: channel_shuffle
+    p: 0.2
+  - name: vertical_flip
+    p: 0.5
+  - name: horizontal_flip
+    p: 0.5
+  - name: rotate
+    always_apply: false
+    p: 0.2

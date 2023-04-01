@@ -1,0 +1,42 @@
+epochs: 0
+val_period: 10
+batch_size: 10
+
+optimizer: {
+  name: "adam",
+  lr: 0.001,
+  weight_decay: 0
+}
+
+
+loss: [
+  {
+    name: "negative_ln_dice",
+    weight: 0.2
+  },
+  {
+    name: "bce",
+    weight: 0.8
+  }
+]
+
+metrics: [
+  {
+    name: "jaccard",
+    threshold: 0
+  },
+]
+
+
+dataset:
+  device: ${device}
+  debug: False
+
+  train_img_dir: ${storage_path}/${train_img_dir_name}
+  train_mask_dir: ${storage_path}/${train_mask_dir_name}
+  val_img_dir: ${storage_path}/${val_img_dir_name}
+  val_mask_dir: ${storage_path}/${val_mask_dir_name}
+
+  train_proportion: 0.5
+
+  augmentation: []

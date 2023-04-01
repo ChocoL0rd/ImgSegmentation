@@ -15,6 +15,9 @@ from albumentations.augmentations.transforms import RandomShadow
 from albumentations.augmentations.geometric.transforms import GridDistortion
 from albumentations.augmentations.geometric.transforms import ElasticTransform
 from albumentations.augmentations.geometric.rotate import RandomRotate90
+from albumentations.augmentations.transforms import Normalize
+from albumentations.augmentations.geometric.rotate import Rotate
+from albumentations.augmentations.crops.transforms import RandomResizedCrop
 
 import cv2 as cv
 
@@ -89,12 +92,31 @@ def cfg2transform(cfg):
                                 )
     elif name == "random_rotate_90":
         trfm = RandomRotate90(cfg.p)
+    elif name == "normalize":
+        trfm = Normalize(
+            p=cfg.p,
+            always_apply=cfg.always_apply,
+            max_pixel_value=255
+        )
+    elif name == "rotate":
+        trfm = Rotate(
+            p=cfg.p,
+            always_apply=cfg.always_apply
+        )
+    elif name == "random_resized_crop":
+        trfm = RandomResizedCrop(
+            height=cfg.height,
+            width=cfg.width,
+            scale=[cfg.min_scale, cfg.max_scale],
+            always_apply=cfg.always_apply,
+            p=cfg.p
+        )
     else:
         msg = f"Transform {name} is wrong."
         log.critical(msg)
         raise Exception(msg)
 
-    log.debug(f"Transform {trfm} is created.")
+    log.debug(f"Transform {name} is created.")
     return trfm
 
 

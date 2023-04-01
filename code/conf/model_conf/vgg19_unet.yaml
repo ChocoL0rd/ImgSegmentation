@@ -9,3 +9,5 @@ decoder_filters: [256, 128, 64, 32, 16]
 parametric_upsampling: False
 shortcut_features: 'default'
 decoder_use_batchnorm: True
+
+

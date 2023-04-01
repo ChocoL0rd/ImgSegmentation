@@ -1,20 +1,104 @@
 storage_path: ${hydra:runtime.cwd}/../data
 
-train_img_dir_name: imgs
-train_mask_dir_name: segmented_imgs
-val_img_dir_name: imgs
-val_mask_dir_name: segmented_imgs
+train_img_dir_name: imgs2
+train_mask_dir_name: segmented_imgs2
+val_img_dir_name: imgs2
+val_mask_dir_name: segmented_imgs2
 
-device: "cuda:0"
 
-load_pretrained: True
-#pretrained_path: outputs/2023-03-05/22-54-10
-#pretrained_path: outputs/2023-03-06/13-19-46
-pretrained_path: outputs/2023-03-06/15-29-36
+device: cuda:0
+
+load_pretrained: false
+load_sublists: false
+
+# vgg19_unet
+#pretrained_path: outputs/2023-03-15/20-54-05
+#pretrained_path: outputs/2023-03-15/21-07-40
+#pretrained_path: outputs/2023-03-15/21-23-03
+#pretrained_path: outputs/2023-03-15/22-19-18
+#pretrained_path: outputs/2023-03-15/22-33-13
+
+# resnet101
+#pretrained_path: outputs/2023-03-18/23-59-51
+#pretrained_path: outputs/2023-03-19/00-18-48
+#pretrained_path: outputs/2023-03-19/08-19-49
+#pretrained_path: outputs/2023-03-19/08-32-28
+
+#pretrained_path: outputs/2023-03-19/09-28-29
+#pretrained_path: outputs/2023-03-19/09-10-06
+
+#pretrained_path: outputs/2023-03-20/05-43-00
+
+#pretrained_path: outputs/2023-03-20/10-03-17
+#pretrained_path: outputs/2023-03-20/10-39-17
+#pretrained_path: outputs/2023-03-20/13-39-57
+#pretrained_path: outputs/2023-03-20/22-03-11
+
+#pretrained_path: outputs/2023-03-21/10-26-53
+#pretrained_path: outputs/2023-03-21/13-42-14
+
+#pretrained_path: outputs/2023-03-21/15-12-08
+
+#pretrained_path: outputs/2023-03-24/15-02-12
+
+#pretrained_path: outputs/2023-03-25/00-01-31
+#pretrained_path: outputs/2023-03-25/11-20-17
+
+#pretrained_path: outputs/2023-03-26/20-55-40
+
+#pretrained_path: outputs/2023-03-27/11-14-55
+#pretrained_path: outputs/2023-03-27/11-42-47
+
+# bn_resnet101_unet
+#pretrained_path: outputs/2023-03-27/15-08-48
+
+#pretrained_path: outputs/2023-03-28/09-00-30
+#pretrained_path: outputs/2023-03-28/20-22-01
+#pretrained_path: outputs/2023-03-28/20-32-47
+
+
+#pretrained_path: outputs/2023-03-29/16-47-22
+#pretrained_path: outputs/2023-03-29/17-27-16
+
+# big resnet101_unet
+#pretrained_path: outputs/2023-03-29/23-52-21
+#pretrained_path: outputs/2023-03-30/09-12-47
+#pretrained_path: outputs/2023-03-30/10-00-45
+
+#bru
+#pretrained_path: outputs/2023-03-30/16-19-15
+
+
+# multi_depth_unet
+#pretrained_path: outputs/2023-03-23/10-28-40
+
+#eru
+#pretrained_path: outputs/2023-03-31/20-19-51
+#pretrained_path: outputs/2023-03-31/20-47-59
+
+
+get_model_conf: False
 
 defaults:
   - _self_
-  - model_conf: tmp
-  - test_conf: tmp
-  - train_conf: tmp
+#  - sublist_conf: tmp
+
+#  - model_conf: multi_depth_unet
+#  - model_conf: resnet101_unet2
+#  - model_conf: bn_resnet101_unet
+#  - model_conf: ruwh
+#  - model_conf: bru
+#  - model_conf: eru
+  - model_conf: peru
+#  - model_conf: vgg19_unet
+
+#  - test_conf: tmp
+  - test_conf: resnet_test
+
+#  - train_conf: tmp
+  - train_conf: cropped_tmp
+#  - train_conf: resnet_train
+#  - train_conf: resnet_train2
+#  - train_conf: no_aug
+#  - train_conf: no_train
 

@@ -1,0 +1,23 @@
+name: "bru"
+pretrained: True
+device: ${device}
+
+in_batch_norm: False
+in_bn_freeze: False
+
+freeze_encoder: [True, True, True, True, True]
+up_chnls: [512, 256, 128, 64, 32]
+
+bridge:
+  in_chnl: 64
+  freeze_in_conv: False
+
+  length: 3
+  use_bn: [True, True, True]
+  freeze: [False, False, False]
+
+use_bn: [True, True, True, True, True] # use batch norms
+drop_values: [0, 0, 0, 0, 0]
+freeze_decoder: [False, False, False, False, False]
+checkpoints: [False, True, True, True, True]
+modes: ["bilinear", "bilinear", "bilinear", "bilinear", "bilinear"] # upsampling modes

@@ -2,7 +2,6 @@ from .model_parts.unet_parts import *
 
 import torch
 from torch import nn
-from torch.utils.checkpoint import checkpoint
 
 
 class BaseUNet(nn.Module):
@@ -20,18 +19,6 @@ class BaseUNet(nn.Module):
         self.up3 = Up(cfg.up_ch[1], cfg.up_ch[2] // factor, cfg.bilinear)
         self.up4 = Up(cfg.up_ch[2], cfg.last_ch, cfg.bilinear)
         self.outc = OutConv(cfg.last_ch, 1)
-
-        if cfg.checkpoint:
-            self.inc = checkpoint(self.inc)
-            self.down1 = checkpoint(self.down1)
-            self.down2 = checkpoint(self.down2)
-            self.down3 = checkpoint(self.down3)
-            self.down4 = checkpoint(self.down4)
-            self.up1 = checkpoint(self.up1)
-            self.up2 = checkpoint(self.up2)
-            self.up3 = checkpoint(self.up3)
-            self.up4 = checkpoint(self.up4)
-            self.outc = checkpoint(self.outc)
 
     def forward(self, x):
         x1 = self.inc(x)

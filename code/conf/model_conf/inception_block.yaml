@@ -1,0 +1,56 @@
+name: "inception_block"
+device: ${device}
+
+final_channels: 64
+
+models: [
+  {
+    pretrained_model: True,
+    name: "resnet101_unet",
+    pretrained: True,
+    pretrained_path: outputs/2023-03-20/05-43-00,
+#    device: ${ device },
+
+    full_freeze: True,
+
+    freeze_encoder: [ True, True, True, True, True ],
+    up_chnls: [ 512, 256, 128, 64, 32 ],
+    use_bn: [ True, True, True, True, True ],
+    drop_values: [ 0, 0, 0, 0, 0 ],
+    freeze_decoder: [ False, False, False, False, False ],
+    modes: [ "bilinear", "bilinear", "bilinear", "bilinear", "bilinear" ]
+  },
+  {
+    pretrained_model: True,
+    name: "resnet101_unet",
+    pretrained: True,
+    pretrained_path: outputs/2023-03-20/07-13-07,
+  #    device: ${ device },
+
+    full_freeze: True,
+
+    freeze_encoder: [ True, True, True, True, True ],
+    up_chnls: [ 512, 256, 128, 64, 32 ],
+    use_bn: [ True, True, True, True, True ],
+    drop_values: [ 0, 0, 0, 0, 0 ],
+    freeze_decoder: [ False, False, False, False, False ],
+    modes: [ "bilinear", "bilinear", "bilinear", "bilinear", "bilinear" ]
+  },
+
+
+#  {
+#    name: "vgg19_unet",
+#    pretrained: True,
+#    pretrained_path:
+#
+##    device: ${ device },
+#
+#    encoder_freeze: [ False, False, False, False, False ],
+#
+#    middle_chnls: 512,
+#    up_chnls: [ 256, 128, 64, 32, 16 ],
+#    use_bn: [ True, True, True, True, True ],
+#    drop_values: [ 0, 0, 0, 0, 0 ],
+#    modes: [ "bilinear", "bilinear", "bilinear", "bilinear", "bilinear" ]
+#  }
+]

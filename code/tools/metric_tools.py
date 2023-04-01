@@ -1,4 +1,7 @@
 import logging
+import torch
+from torch import nn
+
 
 log = logging.getLogger(__name__)
 
@@ -27,12 +30,20 @@ def cfg2metric(cfg):
 
         def set_threshold(x):
             new_x = x.clone()
-            new_x[new_x > threshold] = 1
+            new_x[new_x >= 1-threshold] = 1
             new_x[new_x <= threshold] = 0
             return new_x
+
+        # def set_threshold(x):
+        #     new_x = x.clone()
+        #     new_x[new_x > threshold] = 1
+        #     new_x[new_x <= threshold] = 0
+        #     return new_x
     else:
         msg = f"In metric {name} threshold {threshold} is wrong. " \
-              f"threshold is a number between 0 and 1 or 0 if no threshold."
+              f"threshold is a number between 0 and 0.5 or 0 if no threshold."
+        # msg = f"In metric {name} threshold {threshold} is wrong. " \
+        #       f"threshold is a number between 0 and 1 or 0 if no threshold."
         log.critical(msg)
         raise Exception(msg)
 
@@ -61,7 +72,14 @@ def name2metric(name):
     if name == "mae":
         def new_metric(x, y):
             return abs(x-y).mean([-1, -2])
+    elif name == "bce":
+        bce = nn.BCELoss(reduction="none")
 
+        def new_metric(x, y):
+            return bce(x, y).mean([-1, -2])
+    elif name == "negative_ln_dice":
+        def new_metric(x, y):
+            return -torch.log(2 * (((x * y).sum([-1, -2]) + 0.000001) / (x.sum([-1, -2]) + y.sum([-1, -2])) + 0.000001))
     elif name == "dice":
         def new_metric(x, y):
             return 1 - 2 * (x * y).sum([-1, -2]) / (x.sum([-1, -2]) + y.sum([-1, -2]))
@@ -84,12 +102,20 @@ def num2threshold(num):
     elif type(num) in [int, float] and 0 < num < 1:
         def set_threshold(x):
             new_x = x.clone()
-            new_x[new_x > num] = 1
+            new_x[new_x >= 1-num] = 1
             new_x[new_x <= num] = 0
             return new_x
+
+        # def set_threshold(x):
+        #     new_x = x.clone()
+        #     new_x[new_x > num] = 1
+        #     new_x[new_x <= num] = 0
+        #     return new_x
     else:
         msg = f"Threshold {num} is wrong. " \
-              f"threshold is a number between 0 and 1 or 0 if no threshold."
+              f"threshold is a number between 0 and 0.5 or 0 if no threshold."
+        # msg = f"Threshold {num} is wrong. " \
+        #       f"threshold is a number between 0 and 1 or 0 if no threshold."
         log.critical(msg)
         raise Exception(msg)
 

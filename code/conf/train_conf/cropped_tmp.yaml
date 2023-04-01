@@ -119,15 +119,13 @@ dataset:
       always_apply: False,
       p: 0.3
     },
-#    {
-#      name: "random_resized_crop",
-#      height: 330,
-#      width: 330,
-#      min_scale: 0.6,
-#      max_scale: 1,
-#      always_apply: False,
-#      p: 0.5
-#    },
+    {
+      name: "random_crop",
+      height: 256,
+      width: 256,
+      always_apply: True,
+      p: 1
+    },
     {
       name: "normalize",
       always_apply: True,

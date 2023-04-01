@@ -1,0 +1,128 @@
+epochs: 50
+val_period: 10
+batch_size: 20
+
+optimizer:
+  name: "adam"
+  lr: 0.001
+  weight_decay: 0
+
+loss: [
+  {
+    name: "negative_ln_dice",
+    receptive_field: 0.05,
+    weight: 0.2
+  },
+  {
+    name: "bce",
+    weight: 0.8
+  }
+]
+
+metrics: [
+  {
+    name: "dice",
+    threshold: 0
+  },
+  {
+    name: "dice",
+    threshold: 0.1
+  },
+  {
+    name: "dice",
+    threshold: 0.3
+  },
+  {
+    name: "dice",
+    threshold: 0.5
+  },
+
+]
+
+
+dataset:
+  device: ${device}
+  debug: False
+
+  train_img_dir: ${storage_path}/${train_img_dir_name}
+  train_mask_dir: ${storage_path}/${train_mask_dir_name}
+  val_img_dir: ${storage_path}/${val_img_dir_name}
+  val_mask_dir: ${storage_path}/${val_mask_dir_name}
+
+  train_proportion: 0.5
+
+  augmentation: [
+    {
+      name: "color_jitter",
+      brightness: 0.1,
+      contrast: 0.3,
+      saturation: 0.3,
+      p: 0.1
+    },
+#    {
+#      name: "random_crop",
+#      height: 196,
+#      width: 196,
+#      always_apply: True,
+#      p: 1
+#    },
+    {
+      name: "channel_dropout",
+      p: 0.3
+    },
+    {
+      name: "coarse_dropout",
+      max_holes: 10,
+      max_width: 5,
+      max_height: 5,
+      fill_value: 0.984,
+      p: 0.1
+    },
+    {
+      name: "coarse_dropout",
+      max_holes: 10,
+      max_width: 5,
+      max_height: 5,
+      fill_value: 0.984,
+      p: 0.1
+    },
+    {
+      name: "coarse_dropout",
+      max_holes: 10,
+      max_width: 5,
+      max_height: 5,
+      fill_value: 0,
+      p: 0.1
+    },
+    {
+      name: "coarse_dropout",
+      max_holes: 10,
+      max_width: 5,
+      max_height: 5,
+      fill_value: 0,
+      p: 0.1
+    },
+    {
+      name: "pixel_dropout",
+      dropout_prob: 0.1,
+      per_channel: True,
+      drop_value: 0.984,
+      p: 0.1
+    },
+    {
+      name: "channel_shuffle",
+      p: 0.2
+    },
+    {
+      name: "vertical_flip",
+      p: 0.5
+    },
+    {
+      name: "horizontal_flip",
+      p: 0.5
+    },
+    {
+      name: "blur",
+      p: 0.2
+    },
+  ]

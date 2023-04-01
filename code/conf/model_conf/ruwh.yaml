@@ -1,0 +1,34 @@
+name: "ruwh"
+device: ${device}
+
+body:
+  name: "resnet101_unet"
+  pretrained_model: True
+  pretrained_path: "outputs/2023-03-28/09-00-30"
+
+  pretrained: True # backbone
+  in_batch_norm: True
+  in_bn_freeze: True
+
+  freeze_encoder: [ True, True, True, True, True ]
+  up_chnls: [ 512, 256, 128, 64, 32 ]
+
+  use_bn: [ True, True, True, True, True ] # use batch norms
+  drop_values: [ 0, 0, 0, 0, 0 ]
+  freeze_decoder: [ True, True, True, True, False ]
+  modes: [ "bilinear", "bilinear", "bilinear", "bilinear", "bilinear" ] # upsampling modes
+
+#head:
+#  name: "res"
+#  length: 8
+#  use_bn: True
+#  freeze_neck: False
+
+head:
+  name: "dense"
+  length: 4
+  bn_size: 4
+  growth_rate: 4
+  drop_rate: 0
+  efficient: True
+  freeze_neck: False

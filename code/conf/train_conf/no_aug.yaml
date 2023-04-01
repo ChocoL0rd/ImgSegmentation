@@ -1,0 +1,98 @@
+epochs: 60
+val_period: 50
+batch_size: 8
+
+optimizer:
+  name: "adam"
+  lr: 0.001
+  weight_decay: 0
+
+loss: [
+#  {
+#    name: "negative_ln_dice",
+#    weight: 0.2
+#  },
+#  {
+#    name: "bce",
+#    weight: 0.8
+#  },
+  {
+    name: "soft_jaccard",
+    weight: 1
+  }
+]
+
+metrics: [
+  {
+    name: "jaccard",
+    threshold: 0
+  },
+  {
+    name: "dice",
+    threshold: 0
+  },
+]
+
+
+dataset:
+  device: ${device}
+  debug: False
+
+  train_img_dir: ${storage_path}/${train_img_dir_name}
+  train_mask_dir: ${storage_path}/${train_mask_dir_name}
+  val_img_dir: ${storage_path}/${val_img_dir_name}
+  val_mask_dir: ${storage_path}/${val_mask_dir_name}
+
+  train_proportion: 0.5
+
+  augmentation: [
+#    {
+#      name: "random_shadow",
+#      x_min: 0,
+#      y_min: 0,
+#      x_max: 1,
+#      y_max: 0.4,
+#      num_shadows_lower: 1,
+#      num_shadows_upper: 2,
+#      always_apply: False,
+#      shadow_dimension: 8,
+#      p: 0.2
+#    },
+    {
+      name: "grid_distortion",
+      p: 0.1
+    },
+    {
+      name: "elastic_transform",
+      p: 0.1
+    },
+    {
+      name: "channel_shuffle",
+      p: 0.2
+    },
+    {
+      name: "vertical_flip",
+      p: 0.3
+    },
+    {
+      name: "horizontal_flip",
+      p: 0.3
+    },
+    {
+      name: "random_rotate_90",
+      p: 0.3
+    },
+#    {
+#      name: "to_gray",
+#      p: 0.1
+#    },
+#    {
+#      name: "rotate",
+#      p: 0.3,
+#      always_apply: False
+#    },
+    {
+      name: "channel_dropout",
+      p: 0.1
+    }
+  ]

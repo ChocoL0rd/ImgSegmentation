@@ -1,11 +1,12 @@
 name: "backboned_unet"
 device: ${device}
 
-backbone_name: 'vgg19'
+backbone_name: 'resnet101'
 pretrained: True
 encoder_freeze: True
 classes: 1
 decoder_filters: [256, 128, 64, 32, 16]
-parametric_upsampling: False
+parametric_upsampling: True
 shortcut_features: 'default'
 decoder_use_batchnorm: True
+

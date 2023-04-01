@@ -1,0 +1,245 @@
+thresholds: [0]
+batch_size: 8
+
+metrics: [
+        {
+                name: dice,
+                threshold: 0.0
+        },
+        {
+                name: dice,
+                threshold: 0.02
+        },
+        {
+                name: dice,
+                threshold: 0.04
+        },
+        {
+                name: dice,
+                threshold: 0.06
+        },
+        {
+                name: dice,
+                threshold: 0.08
+        },
+        {
+                name: dice,
+                threshold: 0.1
+        },
+        {
+                name: dice,
+                threshold: 0.12
+        },
+        {
+                name: dice,
+                threshold: 0.14
+        },
+        {
+                name: dice,
+                threshold: 0.16
+        },
+        {
+                name: dice,
+                threshold: 0.18
+        },
+        {
+                name: dice,
+                threshold: 0.2
+        },
+        {
+                name: dice,
+                threshold: 0.22
+        },
+        {
+                name: dice,
+                threshold: 0.24
+        },
+        {
+                name: dice,
+                threshold: 0.26
+        },
+        {
+                name: dice,
+                threshold: 0.28
+        },
+        {
+                name: dice,
+                threshold: 0.3
+        },
+        {
+                name: dice,
+                threshold: 0.32
+        },
+        {
+                name: dice,
+                threshold: 0.34
+        },
+        {
+                name: dice,
+                threshold: 0.36
+        },
+        {
+                name: dice,
+                threshold: 0.38
+        },
+        {
+                name: dice,
+                threshold: 0.4
+        },
+        {
+                name: dice,
+                threshold: 0.42
+        },
+        {
+                name: dice,
+                threshold: 0.44
+        },
+        {
+                name: dice,
+                threshold: 0.46
+        },
+        {
+                name: dice,
+                threshold: 0.48
+        },
+        {
+                name: dice,
+                threshold: 0.5
+        },
+        {
+                name: dice,
+                threshold: 0.52
+        },
+        {
+                name: dice,
+                threshold: 0.54
+        },
+        {
+                name: dice,
+                threshold: 0.56
+        },
+        {
+                name: dice,
+                threshold: 0.58
+        },
+        {
+                name: jaccard,
+                threshold: 0.0
+        },
+        {
+                name: jaccard,
+                threshold: 0.02
+        },
+        {
+                name: jaccard,
+                threshold: 0.04
+        },
+        {
+                name: jaccard,
+                threshold: 0.06
+        },
+        {
+                name: jaccard,
+                threshold: 0.08
+        },
+        {
+                name: jaccard,
+                threshold: 0.1
+        },
+        {
+                name: jaccard,
+                threshold: 0.12
+        },
+        {
+                name: jaccard,
+                threshold: 0.14
+        },
+        {
+                name: jaccard,
+                threshold: 0.16
+        },
+        {
+                name: jaccard,
+                threshold: 0.18
+        },
+        {
+                name: jaccard,
+                threshold: 0.2
+        },
+        {
+                name: jaccard,
+                threshold: 0.22
+        },
+        {
+                name: jaccard,
+                threshold: 0.24
+        },
+        {
+                name: jaccard,
+                threshold: 0.26
+        },
+        {
+                name: jaccard,
+                threshold: 0.28
+        },
+        {
+                name: jaccard,
+                threshold: 0.3
+        },
+        {
+                name: jaccard,
+                threshold: 0.32
+        },
+        {
+                name: jaccard,
+                threshold: 0.34
+        },
+        {
+                name: jaccard,
+                threshold: 0.36
+        },
+        {
+                name: jaccard,
+                threshold: 0.38
+        },
+        {
+                name: jaccard,
+                threshold: 0.4
+        },
+        {
+                name: jaccard,
+                threshold: 0.42
+        },
+        {
+                name: jaccard,
+                threshold: 0.44
+        },
+        {
+                name: jaccard,
+                threshold: 0.46
+        },
+        {
+                name: jaccard,
+                threshold: 0.48
+        },
+        {
+                name: jaccard,
+                threshold: 0.5
+        },
+        {
+                name: jaccard,
+                threshold: 0.52
+        },
+        {
+                name: jaccard,
+                threshold: 0.54
+        },
+        {
+                name: jaccard,
+                threshold: 0.56
+        },
+        {
+                name: jaccard,
+                threshold: 0.58
+        },
+]

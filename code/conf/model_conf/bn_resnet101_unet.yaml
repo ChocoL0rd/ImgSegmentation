@@ -1,0 +1,17 @@
+name: "resnet101_unet"
+pretrained: True
+device: ${device}
+
+in_batch_norm: True
+in_bn_freeze: True
+
+freeze_encoder: [True, True, True, True, True]
+up_chnls: [512, 256, 128, 64, 32]
+#up_chnls: [768, 384, 192, 96, 48]
+#up_chnls: [1024, 512, 256, 128, 64]
+
+use_bn: [True, True, True, True, True] # use batch norms
+drop_values: [0, 0, 0, 0, 0]
+freeze_decoder: [False, False, False, False, False]
+modes: ["bilinear", "bilinear", "bilinear", "bilinear", "bilinear"] # upsampling modes
+
