@@ -5,6 +5,7 @@ device: ${device}
 in_batch_norm: False
 freeze_encoder: [True, True, True, True, True]
 up_chnls: [512, 256, 128, 64, 32]
+
 use_bn: [True, True, True, True, True] # use batch norms
 drop_values: [0, 0, 0, 0, 0]
 freeze_decoder: [True, True, True, True, False]

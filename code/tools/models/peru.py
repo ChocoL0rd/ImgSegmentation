@@ -57,8 +57,9 @@ class PERU(nn.Module):
             if cfg.freeze_decoder[i]:
                 for param in self.upsample_blocks[i].parameters():
                     param.requires_grad = False
-
-        self.final_conv = nn.Conv2d(sum([i for i in cfg.up_chnls]), 1, kernel_size=1)
+        s = cfg.up_chnls[1] + cfg.up_chnls[2] + cfg.up_chnls[3] + cfg.up_chnls[4]
+        self.final_conv = nn.Conv2d(s, 1, kernel_size=1)
+        # self.final_conv = nn.Conv2d(sum([i for i in cfg.up_chnls][1:]), 1, kernel_size=1)
 
     def encode(self, x0):
         """
@@ -103,7 +104,7 @@ class PERU(nn.Module):
         # Encoder
         middle, skips, sizes = self.encode(x)
         # Decoder
-        decoder_outs = self.decode(middle, skips, sizes, original_size)
+        decoder_outs = self.decode(middle, skips, sizes, original_size)[1:]
 
         for i, out in enumerate(decoder_outs):
             decoder_outs[i] = F.interpolate(out, size=original_size, mode="bilinear", align_corners=None)

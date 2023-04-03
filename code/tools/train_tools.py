@@ -380,7 +380,7 @@ def fit(epochs, val_period,
             loss_value.backward()
             optimizer.step()
 
-        if epoch != 0 and (epoch % val_period == 0 or epoch == epochs-1):
+        if epoch != 0 and epoch % val_period == 0:
             model.eval()
             with torch.no_grad():
                 for img_names, img_batch, mask_batch in val_loader:

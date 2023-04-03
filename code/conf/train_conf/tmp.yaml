@@ -1,11 +1,11 @@
-epochs: 50
-val_period: 10
+epochs: 100
+val_period: 100
 batch_size: 4
 
 optimizer:
   name: "adam"
   lr: 0.001
-  weight_decay: 0
+  weight_decay: 0.001
 
 loss: [
   {
@@ -65,9 +65,13 @@ dataset:
       name: "channel_dropout",
       p: 0.2
     },
+#    {
+#      name: "blur",
+#      p: 0.5
+#    },
     {
       name: "blur",
-      p: 0.5
+      p: 1
     },
     {
       name: "color_jitter",
@@ -119,15 +123,15 @@ dataset:
       always_apply: False,
       p: 0.3
     },
-#    {
-#      name: "random_resized_crop",
-#      height: 330,
-#      width: 330,
-#      min_scale: 0.6,
-#      max_scale: 1,
-#      always_apply: False,
-#      p: 0.5
-#    },
+    {
+      name: "random_resized_crop",
+      height: 256,
+      width: 256,
+      min_scale: 0.6,
+      max_scale: 1,
+      always_apply: True,
+      p: 1
+    },
     {
       name: "normalize",
       always_apply: True,

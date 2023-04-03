@@ -1,5 +1,6 @@
 import torch
 from torch import nn
+from collections import OrderedDict
 
 __all__ = [
     "Bottleneck",
@@ -55,10 +56,10 @@ class NeckSequence(nn.Sequential):
         super(NeckSequence, self).__init__()
         if isinstance(use_bn, list):
             for i in range(length):
-                self.add_module(f"Bottleneck{i}", Bottleneck(channels, channels//2, use_bn[i]))
+                self.add_module(f"Bottleneck{i}", Bottleneck(channels, channels // 2, use_bn[i]))
         else:
             for i in range(length):
-                self.add_module(f"Bottleneck{i}", Bottleneck(channels, channels//2, use_bn))
+                self.add_module(f"Bottleneck{i}", Bottleneck(channels, channels // 2, use_bn))
 
 
 class DilatedBottleneck(nn.Module):
@@ -71,15 +72,17 @@ class DilatedBottleneck(nn.Module):
                                  kernel_size=1, stride=1, padding=0, bias=False)
         self.bn1 = nn.BatchNorm2d(hid_chnls)
 
-        self.hidden_layer = nn.ModuleList([
-            nn.Conv2d(hid_chnls, hid_chnls//len(dilations),
-                      kernel_size=3, stride=1, bias=False,
-                      padding=dilation, dilation=dilation) for dilation in dilations
-        ])
+        self.hidden_layer = nn.ModuleList()
+
+        for dilation in dilations:
+            self.hidden_layer.append(nn.Sequential(OrderedDict([
+                ("conv", nn.Conv2d(hid_chnls, hid_chnls // len(dilations),
+                                   kernel_size=3, stride=1, bias=False,
+                                   padding=dilation, dilation=dilation)),
+                ("bn", nn.BatchNorm2d(hid_chnls // len(dilations)))
+            ])))
 
         num_hidden_chnls = (hid_chnls // len(dilations)) * len(dilations)
-        self.bn2 = nn.BatchNorm2d(num_hidden_chnls)
-
         self.out_conv = nn.Conv2d(num_hidden_chnls, in_chnls,
                                   kernel_size=1, stride=1, padding=0, bias=False)
         self.bn3 = nn.BatchNorm2d(in_chnls)
@@ -87,7 +90,23 @@ class DilatedBottleneck(nn.Module):
         self.relu = nn.ReLU()
 
     def forward(self, x):
-        y = self.in_conv(x)
+        y = self.bn1(self.in_conv(x))
 
-        y = self.relu(y)
+        hid_outs = []
+        for hid_conv in self.hidden_layer:
+            hid_outs.append(hid_conv(y))
+        y = torch.cat(hid_outs, dim=1)
+
+        y = self.relu(self.bn3(self.out_conv(y)))
+
         return x + y
+
+
+class DilatedNeckSequence(nn.Sequential):
+    def __init__(self, channels, dilations, length):
+        super(DilatedNeckSequence, self).__init__()
+        for i in range(length):
+            self.add_module(f"Bottleneck{i}", DilatedBottleneck(channels, dilations))
+
+
+

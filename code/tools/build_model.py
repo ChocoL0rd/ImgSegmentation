@@ -14,6 +14,7 @@ from .models.bru import BRU
 from .models.ruwh import RUwH
 from .models.eru import ERU
 from .models.peru import PERU
+from .models.ruf import RUF
 
 __all__ = [
     "cfg2model",
@@ -37,6 +38,7 @@ name2model_class = {
     "ruwh": RUwH,
     "eru": ERU,
     "peru": PERU,
+    "ruf": RUF,
 }
 
 

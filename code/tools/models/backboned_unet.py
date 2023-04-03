@@ -8,8 +8,6 @@ def get_backbone(name, pretrained=True):
 
     """ Loading backbone, defining names for skip-connections and encoder output. """
 
-    # TODO: More backbones
-
     # loading backbone model
     if name == 'resnet18':
         if pretrained:
@@ -77,7 +75,6 @@ def get_backbone(name, pretrained=True):
         feature_names = [None, 'relu', 'layer1', 'layer2', 'layer3']
         backbone_output = 'layer4'
     elif name == 'vgg16':
-        # TODO: consider using a 'bridge' for VGG models, there is just a MaxPool between last skip and backbone output
         feature_names = ['5', '12', '22', '32', '42']
         backbone_output = '43'
     elif name == 'vgg19':

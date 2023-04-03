@@ -1,6 +1,6 @@
 epochs: 50
 val_period: 10
-batch_size: 4
+batch_size: 6
 
 optimizer:
   name: "adam"
@@ -121,8 +121,8 @@ dataset:
     },
     {
       name: "random_crop",
-      height: 256,
-      width: 256,
+      height: 240,
+      width: 240,
       always_apply: True,
       p: 1
     },
