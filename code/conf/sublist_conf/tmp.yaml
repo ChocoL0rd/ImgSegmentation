@@ -1,3 +1,11 @@
-name: "threshold"
-metric: "jaccard"
-threshold: 0.03
+#name: "threshold"
+#metric: "jaccard"
+#threshold: 0.03
+
+name: "check_train"
+threshold: 0.02
+metric: jaccard
+model_path: outputs/2023-04-04/21-43-17
+
+
+

@@ -16,6 +16,8 @@ import json
 
 import logging
 
+import pandas as pd
+
 from .metric_tools import *
 from .augmentation_tools import *
 from .loss_tools import *
@@ -130,7 +132,17 @@ img2tensor = ToTensor()
 #                     "imgs_list":  self.get_img_list() # names saved with jpeg format
 #                 },
 #                 fp, indent=2)
+def setlevel(img, level):
+    inBlack = np.array([0, 0, 0], dtype=np.float32)
+    inWhite = np.array([255, 255, 255], dtype=np.float32)
+    inGamma = np.array([level, level, level], dtype=np.float32)
+    outBlack = np.array([0, 0, 0], dtype=np.float32)
+    outWhite = np.array([255, 255, 255], dtype=np.float32)
 
+    img = np.clip((img - inBlack) / (inWhite - inBlack), 0, 255)
+    img = (img ** (1 / inGamma)) * (outWhite - outBlack) + outBlack
+    img = np.clip(img, 0, 255).astype(np.uint8)
+    return img
 
 class ImgMaskSet(Dataset):
     """
@@ -212,7 +224,7 @@ class ImgMaskSet(Dataset):
                 new_img = img
             else:
                 trfmd_bgr = self.bgr_trfm(image=img, mask=mask)["image"]
-                new_img = img * mask.reshape([330, 330, 1]) + trfmd_bgr * (1 - mask.reshape([330, 330, 1]))
+                new_img = (img * mask.reshape([330, 330, 1]) + trfmd_bgr * (1 - mask.reshape([330, 330, 1]))).astype("uint8")
 
             # apply transformations
             transformed = self.trfms(image=new_img, mask=mask)
@@ -241,21 +253,34 @@ class ImgMaskSet(Dataset):
                 fp, indent=2)
 
 
-def cfg2sublists(cfg, sublists, top):
+def cfg2sublists(cfg, sublists, val_top, train_top):
     """
+    :param train_top: dataframe
+    :param val_top: dataframe
     :param cfg:
     :param sublists: dictionary
-    :param top: dataframe
     :return:
     """
-    df = top[[cfg.metric, "img_name"]]
+    val_df = val_top[[cfg.metric, "img_name"]]
+    train_df = train_top[[cfg.metric, "img_name"]]
     if cfg.name == "threshold":
-        satisfying_imgs = df[df[cfg.metric][0] <= cfg.threshold]["img_name"][0].tolist()
+        satisfying_imgs = val_df[val_df[cfg.metric][0] <= cfg.threshold]["img_name"][0].tolist()
         log.info(f"Number of satisfying images: {len(satisfying_imgs)}")
         sublists = {
             "train": sublists["train"] + satisfying_imgs,
             "val": [img for img in sublists["val"] if img not in satisfying_imgs]
         }
+    if cfg.name == "check_train":
+        # images that are low metric are excepted
+        check_df = pd.read_excel(os.path.join(cfg.model_path, "train", "full_results.xlsx"),
+                                 header=[0, 1], index_col=[0])
+        check_list = check_df[check_df[cfg.metric][0] > cfg.threshold]["img_name"][0]
+        sublists = {
+            "train": [i for i in train_df["img_name"][0].tolist() if i in check_list.tolist()],
+            "val": val_df["img_name"][0].tolist()
+        }
+
+
     else:
         msg = f"Name of sublist rule {cfg.name} is wrong"
         log.critical(msg)

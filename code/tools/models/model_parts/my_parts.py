@@ -9,10 +9,13 @@ __all__ = [
 
 
 class Bottleneck(nn.Module):
-    def __init__(self, channel, hid_channel, use_bn=True):
+    def __init__(self, channel, hid_channel, use_bn=True, out_channel=None):
         super(Bottleneck, self).__init__()
 
         self.use_bn = use_bn
+
+        if out_channel is None:
+            out_channel = channel
 
         if self.use_bn:
             self.conv1 = nn.Conv2d(channel, hid_channel,
@@ -21,15 +24,15 @@ class Bottleneck(nn.Module):
             self.conv2 = nn.Conv2d(hid_channel, hid_channel,
                                    kernel_size=3, stride=1, padding=1, bias=False)
             self.bn2 = nn.BatchNorm2d(hid_channel)
-            self.conv3 = nn.Conv2d(hid_channel, channel,
+            self.conv3 = nn.Conv2d(hid_channel, out_channel,
                                    kernel_size=1, stride=1, padding=0, bias=False)
-            self.bn3 = nn.BatchNorm2d(channel)
+            self.bn3 = nn.BatchNorm2d(out_channel)
         else:
             self.conv1 = nn.Conv2d(channel, hid_channel,
                                    kernel_size=1, stride=1, padding=0, bias=True)
             self.conv2 = nn.Conv2d(hid_channel, hid_channel,
                                    kernel_size=3, stride=1, padding=1, bias=True)
-            self.conv3 = nn.Conv2d(hid_channel, channel,
+            self.conv3 = nn.Conv2d(hid_channel, out_channel,
                                    kernel_size=1, stride=1, padding=0, bias=True)
 
         self.relu = nn.ReLU()

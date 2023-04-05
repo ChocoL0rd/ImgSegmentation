@@ -8,11 +8,11 @@ from .model_parts.upsample_block import UpsampleBlock
 class ResNet101UNet(nn.Module):
     def __init__(self, cfg):
         super(ResNet101UNet, self).__init__()
-        self.in_batch_norm = nn.BatchNorm2d(3) if cfg.in_batch_norm else lambda x: x
-        if cfg.in_batch_norm:
-            if cfg.in_bn_freeze:
-                self.in_batch_norm.weight.requires_grad = False
-                self.in_batch_norm.bias.requires_grad = False
+        self.in_norm = nn.LayerNorm([3, 330, 330]) if cfg.in_norm else lambda x: x
+        if cfg.in_norm:
+            if cfg.in_norm_freeze:
+                self.in_norm.weight.requires_grad = False
+                self.in_norm.bias.requires_grad = False
 
         if cfg.pretrained:
             self.backbone = models.resnet101(weights="ResNet101_Weights.DEFAULT")
@@ -69,7 +69,7 @@ class ResNet101UNet(nn.Module):
         :return: last feature map in encoder (middle), skip feature maps and their sizes
         """
 
-        x0 = self.in_batch_norm(x0)
+        x0 = self.in_norm(x0)
         x0 = self.backbone.conv1(x0)
         x0 = self.backbone.bn1(x0)
         x0 = self.backbone.relu(x0)

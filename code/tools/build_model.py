@@ -15,6 +15,8 @@ from .models.ruwh import RUwH
 from .models.eru import ERU
 from .models.peru import PERU
 from .models.ruf import RUF
+from .models.atrous_seq import AtrousSeq
+
 
 __all__ = [
     "cfg2model",
@@ -39,6 +41,7 @@ name2model_class = {
     "eru": ERU,
     "peru": PERU,
     "ruf": RUF,
+    "atrous_seq": AtrousSeq,
 }
 
 

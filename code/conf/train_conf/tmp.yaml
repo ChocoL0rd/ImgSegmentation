@@ -1,21 +1,41 @@
-epochs: 100
+epochs: 0
 val_period: 100
-batch_size: 4
+batch_size: 10
 
 optimizer:
   name: "adam"
   lr: 0.001
-  weight_decay: 0.001
+  weight_decay: 0
 
 loss: [
+#  {
+#    name: "negative_ln_dice",
+#    weight: 0.4,
+#  },
+#  {
+#    name: "bce",
+#    weight: 0.6,
+#  },
   {
-    name: "negative_ln_dice",
-    weight: 0.4,
+    name: negative_ln_dice,
+    weight: 0.1
   },
   {
-    name: "bce",
-    weight: 0.6,
+    name: inversed_negative_ln_dice,
+    weight: 0.1
   },
+  {
+    name: bce,
+    weight: 0.8
+  },
+  {
+    name: soft_jaccard,
+    weight: 0.005
+  },
+  {
+    name: inversed_soft_jaccard,
+    weight: 0.005
+  }
 ]
 
 metrics: [
@@ -42,99 +62,126 @@ dataset:
   train_proportion: 0.5
 
   bgr_augmentation: [
-    {
-      name: "coarse_dropout",
-      max_holes: 5,
-      max_width: 8,
-      max_height: 8,
-      fill_value: 0,
-      p: 0.5
-    },
-    {
-      name: "pixel_dropout",
-      per_channel: True,
-      drop_value: 0,
-      dropout_prob: 0.01,
-      p: 0.5
-    },
-    {
-      name: "channel_shuffle",
-      p: 0.5
-    },
-    {
-      name: "channel_dropout",
-      p: 0.2
-    },
+#    {
+#      name: "coarse_dropout",
+#      max_holes: 5,
+#      max_width: 8,
+#      max_height: 8,
+#      fill_value: 0,
+#      p: 0.5
+#    },
+#    {
+#      name: "pixel_dropout",
+#      per_channel: True,
+#      drop_value: 0,
+#      dropout_prob: 0.01,
+#      p: 0.5
+#    },
+#    {
+#      name: "channel_shuffle",
+#      p: 0.5
+#    },
+#    {
+#      name: "channel_dropout",
+#      p: 0.2
+#    },
 #    {
 #      name: "blur",
 #      p: 0.5
 #    },
-    {
-      name: "blur",
-      p: 1
-    },
-    {
-      name: "color_jitter",
-      brightness: 0.5,
-      contrast: 0.5,
-      saturation: 0.5,
-      p: 0.5
-    }
+#    {
+#      name: "color_jitter",
+#      brightness: 0.5,
+#      contrast: 0.3,
+#      saturation: 0.3,
+#      p: 0.5
+#    }
   ]
 
-  augmentation: [
-    {
-      name: "color_jitter",
-      brightness: 0.1,
-      contrast: 0.3,
-      saturation: 0.3,
-      p: 0.3
-    },
-    {
-      name: "grid_distortion",
-      p: 0.3
-    },
-    {
-      name: "elastic_transform",
-      p: 0.3
-    },
-    {
-      name: "channel_dropout",
-      p: 0.1
-    },
-    {
-      name: "channel_shuffle",
-      p: 0.3
-    },
-    {
-      name: "vertical_flip",
-      p: 0.3
-    },
-    {
-      name: "horizontal_flip",
-      p: 0.3
-    },
-    {
-      name: "to_gray",
-      p: 0.1
-    },
-    {
-      name: "rotate",
-      always_apply: False,
-      p: 0.3
-    },
-    {
-      name: "random_resized_crop",
-      height: 256,
-      width: 256,
-      min_scale: 0.6,
-      max_scale: 1,
-      always_apply: True,
-      p: 1
-    },
-    {
-      name: "normalize",
-      always_apply: True,
-      p: 1
-    }
-  ]
+#  augmentation: [
+#    {
+#      name: "color_jitter",
+#      brightness: 0,
+#      contrast: 0.3,
+#      saturation: 0.3,
+#      p: 0.3
+#    },
+#    {
+#      name: "grid_distortion",
+#      p: 0.3
+#    },
+#    {
+#      name: "elastic_transform",
+#      p: 0.3
+#    },
+#    {
+#      name: "channel_shuffle",
+#      p: 0.3
+#    },
+#    {
+#      name: "vertical_flip",
+#      p: 0.3
+#    },
+#    {
+#      name: "horizontal_flip",
+#      p: 0.3
+#    },
+#    {
+#      name: "to_gray",
+#      p: 0.1
+#    },
+#    {
+#      name: "rotate",
+#      always_apply: False,
+#      p: 0.3
+#    },
+#    {
+#      name: "random_resized_crop",
+#      height: 330,
+#      width: 330,
+#      min_scale: 0.6,
+#      max_scale: 1,
+#      always_apply: True,
+#      p: 1
+#    },
+#
+#    {
+#      name: "normalize",
+#      always_apply: True,
+#      p: 1
+#    }
+#  ]
+  augmentation:
+      - name: color_jitter
+        brightness: 0
+        contrast: 0.3
+        saturation: 0.3
+        p: 0.3
+      - name: channel_dropout
+        p: 0.2
+      - name: coarse_dropout
+        max_holes: 10
+        max_width: 5
+        max_height: 5
+        fill_value: 255
+        p: 0.1
+      - name: coarse_dropout
+        max_holes: 10
+        max_width: 5
+        max_height: 5
+        fill_value: 0
+        p: 0.1
+      - name: channel_shuffle
+        p: 0.3
+      - name: vertical_flip
+        p: 0.3
+      - name: horizontal_flip
+        p: 0.3
+      - name: to_gray
+        p: 0.1
+      - name: rotate
+        always_apply: false
+        p: 0.1
+      - name: "normalize"
+        always_apply: True
+        p: 1

@@ -51,8 +51,10 @@ def my_app(cfg):
 
             val_top = pd.read_excel(os.path.join(cfg.pretrained_path, "validation", "full_results.xlsx"),
                                     header=[0, 1], index_col=[0])
+            train_top = pd.read_excel(os.path.join(cfg.pretrained_path, "train", "full_results.xlsx"),
+                                      header=[0, 1], index_col=[0])
             # here some function that should change train and val according to some params
-            sublists = cfg2sublists(cfg.sublist_conf, sublists, val_top)
+            sublists = cfg2sublists(cfg.sublist_conf, sublists, val_top, train_top)
 
     train_dataset, val_dataset = cfg2datasets(cfg, data_sublists=sublists)
     for dataset in [train_dataset, val_dataset]:

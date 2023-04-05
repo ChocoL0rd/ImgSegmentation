@@ -8,8 +8,8 @@ val_mask_dir_name: segmented_imgs2
 
 device: cuda:0
 
-load_pretrained: false
-load_sublists: false
+load_pretrained: true
+load_sublists: true
 
 # vgg19_unet
 #pretrained_path: outputs/2023-03-15/20-54-05
@@ -48,6 +48,8 @@ load_sublists: false
 
 #pretrained_path: outputs/2023-03-27/11-14-55
 #pretrained_path: outputs/2023-03-27/11-42-47
+#pretrained_path: outputs/2023-03-27/12-09-52
+
 
 # bn_resnet101_unet
 #pretrained_path: outputs/2023-03-27/15-08-48
@@ -82,21 +84,28 @@ load_sublists: false
 #ruf
 #pretrained_path: outputs/2023-04-01/23-48-08
 
+
+# good loss
+# resnet101_unet with
+#pretrained_path: outputs/2023-04-04/09-40-06
+pretrained_path: outputs/2023-04-04/21-43-17
+
 get_model_conf: False
 
 defaults:
   - _self_
-#  - sublist_conf: tmp
+  - sublist_conf: tmp
 
 #  - model_conf: multi_depth_unet
-#  - model_conf: resnet101_unet2
+  - model_conf: resnet101_unet2
 #  - model_conf: bn_resnet101_unet
 #  - model_conf: ruwh
 #  - model_conf: bru
 #  - model_conf: eru
 #  - model_conf: peru
-  - model_conf: ruf
+#  - model_conf: ruf
 #  - model_conf: vgg19_unet
+#  - model_conf: atrous_seq
 
 #  - test_conf: tmp
   - test_conf: resnet_test
