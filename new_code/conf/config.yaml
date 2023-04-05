@@ -1,0 +1,12 @@
+comment: "start"
+
+device: cuda:0
+
+defaults:
+  - _self_
+  - train_cfg: tmp
+  - test_cfg: tmp
+  - model_cfg: example
+  - dataset_cfg: tmp
+
+

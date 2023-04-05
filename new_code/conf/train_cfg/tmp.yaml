@@ -1,0 +1,40 @@
+epochs: 0
+val_period: 100
+batch_size: 10
+model_save_period: 10
+
+loss: [
+  {
+    name: negative_ln_dice,
+    weight: 0.1
+  },
+  {
+    name: inversed_negative_ln_dice,
+    weight: 0.1
+  },
+  {
+    name: bce,
+    weight: 0.8
+  },
+  {
+    name: soft_jaccard,
+    weight: 0.005
+  },
+  {
+    name: inversed_soft_jaccard,
+    weight: 0.005
+  }
+]
+
+metrics: [
+  {
+    name: "dice",
+    threshold: 0
+  },
+  {
+    name: "jaccard",
+    threshold: 0
+  },
+]
+
+
