@@ -1,3 +1,15 @@
+batch_size: 16
 
+save_path: ${hydra:runtime.output_dir}
+
+illustrate_dataset: [
+  "train",
+  "validation"
+]
+
+metrics: [
+  "soft_dice",
+  "soft_jaccard"
+]
 
 

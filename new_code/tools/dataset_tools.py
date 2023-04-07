@@ -2,22 +2,25 @@ from torch.utils.data import Dataset
 from torchvision.transforms.transforms import ToTensor
 import torch
 
+import albumentations as A
+
 import numpy as np
 
 from PIL import Image
 import cv2 as cv
 
-from typing import Optional, Union, List
+from typing import Dict, Optional, Union, List
 import os
 import json
 
 import logging
 
-from aug_tools import *
+from .aug_tools import *
 
 __all__ = [
     "cfg2datasets",
     "ImgMaskSet",
+    "datasets2json_file"
 ]
 
 # Here implemented 'fit' that trains model.
@@ -82,7 +85,7 @@ class ImgMaskSet(Dataset):
     def __len__(self):
         return self.size
 
-    def __getitem__(self, idx):
+    def __getitem__(self, idx: int):
 
         img_name = self.img_list[idx]
         img_path = os.path.join(self.img_dir_path, img_name + ".jpeg")
@@ -107,7 +110,7 @@ class ImgMaskSet(Dataset):
 
         # return original image if it's needed
         if self.return_original_img:
-            original_img = img2tensor(original_img)
+            original_img = img2tensor(original_img).to(self.device)
             return img_name, img_tensor, mask_tensor, original_img
         else:
             return img_name, img_tensor, mask_tensor
@@ -118,19 +121,17 @@ class ImgMaskSet(Dataset):
         mask = mask.reshape([330, 330, 1])
         img = (trfmd_fgr * mask + trfmd_bgr * (1 - mask)).astype("uint8")
 
-        tmp = self.trfm(image=img, mask=mask)
-        img, mask = tmp["image"], tmp["mask"]
-        return img, mask
+        augmented = self.trfm(image=img, mask=mask)
+        return augmented["image"], augmented["mask"]
 
     def apply_preproc(self, img, mask):
-        tmp = self.preproc(image=img, mask=mask)
-        img, mask = tmp["image"], tmp["mask"]
-        return img, mask
+        preprocessed = self.preproc(image=img, mask=mask)
+        return preprocessed["image"], preprocessed["mask"]
 
     def get_img_list(self):
         return [f"{i}.jpeg" for i in self.img_list]
 
-    def img_list2file(self, path):
+    def img_list2file(self, path: str):
         with open(os.path.join(path, f"{self.log_name}_dataset.json"), "w") as fp:
             json.dump(
                 {
@@ -187,14 +188,36 @@ def cfg2datasets(cfg):
     # creating
     datasets = {}
     for ds_name in ds_lists:
-        datasets[ds_name] = ImgMaskSet(
-            log_name=ds_name,
-            img_dir_path=img_path, mask_dir_path=mask_path,
-            img_list=ds_lists[ds_name],
-            bgr_trfm=bgr_trfm, fgr_trfm=fgr_trfm, trfm=trfm, preproc=preproc,
-            device=torch.device(cfg.device)
-        )
+        if ds_name == "validation":
+            datasets[ds_name] = ImgMaskSet(
+                log_name=ds_name,
+                img_dir_path=img_path, mask_dir_path=mask_path,
+                img_list=ds_lists[ds_name],
+                bgr_trfm=A.Compose([]), fgr_trfm=A.Compose([]), trfm=A.Compose([]), preproc=preproc,
+                device=torch.device(cfg.device)
+            )
+        else:
+            datasets[ds_name] = ImgMaskSet(
+                log_name=ds_name,
+                img_dir_path=img_path, mask_dir_path=mask_path,
+                img_list=ds_lists[ds_name],
+                bgr_trfm=bgr_trfm, fgr_trfm=fgr_trfm, trfm=trfm, preproc=preproc,
+                device=torch.device(cfg.device)
+            )
 
     return datasets
 
+
+def datasets2json_file(datasets: Dict[str, ImgMaskSet], save_path: str):
+    key = [i for i in datasets.keys()][0]
+    ds_dict = {
+        "img_path": datasets[key].img_dir_path,
+        "mask_path": datasets[key].mask_dir_path
+    }
+
+    for dataset_name, dataset in datasets.items():
+        ds_dict[dataset_name] = dataset.get_img_list()
+
+    with open(os.path.join(save_path, "datasets.json"), "w") as fp:
+        json.dump(ds_dict, fp, indent=4)
 

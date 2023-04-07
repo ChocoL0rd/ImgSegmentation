@@ -1,3 +1,10 @@
+name: ""
+device: ${device}
+
+load_pretrained: False
+#pretrained_path:
+
+# models settings
 
 
 

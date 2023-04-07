@@ -14,6 +14,6 @@ class Example(nn.Module):
         """ Activated output of model """
         pass
 
-    def get_parts(self):
+    def get_params(self):
         """ Return parts of model to apply different optimizers to them """
         pass

@@ -1,21 +1,21 @@
-import os
 import hydra
-import pandas as pd
 from hydra.utils import get_original_cwd, to_absolute_path
-from omegaconf import OmegaConf, open_dict
-import logging
 import hydra.core.hydra_config
-import numpy as np
+from omegaconf import OmegaConf
 
 import torch
+import numpy as np
 
-from tools.train_tools import *
-from tools.build_model import *
-from tools.test_tools import *
-from tools.dataset_tools import *
+import os
+import logging
+
+
+from tools.train_tools import cfg2fit
+from tools.model_tools import cfg2model
+from tools.test_tools import cfg2test
+from tools.dataset_tools import cfg2datasets, datasets2json_file
 
 import random
-import json
 
 random.seed(0)
 np.random.seed(0)
@@ -23,39 +23,29 @@ torch.manual_seed(0)
 
 log = logging.getLogger(__name__)
 
+
 @hydra.main(version_base=None, config_path="conf", config_name="config")
 def my_app(cfg):
     hydra_cfg = hydra.core.hydra_config.HydraConfig.get()
-    output_dir = hydra_cfg.runtime.output_dir
+    save_path = hydra_cfg.runtime.output_dir
     OmegaConf.resolve(cfg)
 
-    if cfg.load_pretrained:
-        if cfg.get_model_conf:
-            new_cfg = OmegaConf.load(os.path.join(cfg.pretrained_path, ".hydra/config.yaml"))
-            cfg.model_conf = new_cfg.model_conf
-            OmegaConf.resolve(cfg)
-
-    model = model_cfg2model(cfg.model_cfg)
-
-    sublists = None
-    if cfg.load_pretrained:
-        model.load_state_dict(torch.load(os.path.join(cfg.pretrained_path, "model.pt")))
+    # creating model
+    model = cfg2model(cfg.model_cfg)
 
     # creating datasets
     datasets = cfg2datasets(cfg.dataset_cfg)
 
     # saving imgs of each dataset in dir made by hydra
-    for name, dataset in datasets:
-        dataset.img_list2file(output_dir)
-        # may be better to return {dataset_log_name: img_list}, to make one file with all files
+    datasets2json_file(datasets, save_path)
 
     # training model
-    cfg2train(model, train_dataset, val_dataset, cfg.train_cfg)
+    cfg2fit(cfg.train_cfg, model, datasets["train"], datasets["validation"])
 
-    torch.save(model.state_dict(), os.path.join(output_dir, "model.pt"))
+    torch.save(model.state_dict(), os.path.join(save_path, "model.pt"))
 
-    cfg2test(model, train_dataset, output_dir, cfg)
-    fg2test(model, val_dataset, output_dir, cfg)
+    for name, dataset in datasets.items():
+        cfg2test(cfg.test_cfg, model, dataset)
 
 
 if __name__ == "__main__":

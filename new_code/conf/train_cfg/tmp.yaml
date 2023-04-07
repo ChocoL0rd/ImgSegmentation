@@ -1,40 +1,52 @@
-epochs: 0
-val_period: 100
+epochs: 100
+val_period: 2
 batch_size: 10
-model_save_period: 10
 
+# minimizing loss that is a weighted sum
 loss: [
-  {
-    name: negative_ln_dice,
-    weight: 0.1
-  },
-  {
-    name: inversed_negative_ln_dice,
-    weight: 0.1
-  },
-  {
-    name: bce,
-    weight: 0.8
-  },
-  {
-    name: soft_jaccard,
-    weight: 0.005
-  },
-  {
-    name: inversed_soft_jaccard,
-    weight: 0.005
-  }
+    {
+        name: neg_ln_dice,
+        weight: 0.1
+    },
+    {
+        name: inv_neg_ln_dice,
+        weight: 0.1
+    },
+    {
+        name: bce,
+        weight: 0.8
+    },
+    {
+        name: soft_jaccard,
+        weight: 0.005
+    },
+    {
+        name: inv_soft_jaccard,
+        weight: 0.005
+    }
 ]
 
+# metrics computed during the validation
 metrics: [
-  {
-    name: "dice",
-    threshold: 0
-  },
-  {
-    name: "jaccard",
-    threshold: 0
-  },
+  "soft_dice",
+  "soft_jaccard"
 ]
 
+optimizer:
+    name: "adam"
+    lrs: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+    weight_decays: [0, 0, 0, 0, 0, 0]
+
+# changes lrs depending on mean loss (mean of means per batch) of validation
+scheduler:
+    name: "reduce_on_plateau"
+    factor: 0.1
+    step_size: 5
+
+# stops depending on target metric that have to be in metrics
+early_stopper:
+    save_path: ${hydra:runtime.output_dir}
+    target_metric: "soft_jaccard"
+    patience: 10
+    delta: 0
 

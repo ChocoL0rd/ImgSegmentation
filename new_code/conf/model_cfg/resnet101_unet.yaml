@@ -1,0 +1,18 @@
+load_pretrained: False
+#pretrained_path:
+device: ${device}
+
+name: "resnet101_unet"
+pretrained_backbone: True
+
+# decoder
+up_chnls: [512, 256, 128, 64, 32]
+use_bn: [True, True, True, True, True] # use batch norms
+drop_values: [0, 0, 0, 0, 0]
+modes: ["bilinear", "bilinear", "bilinear", "bilinear", "bilinear"] # upsampling modes
+
+
+# returns in get_params, what is not frozen
+freeze_encoder: [True, True, True, True, True]
+freeze_decoder: [False, False, False, False, False]
+freeze_final_conv: False
