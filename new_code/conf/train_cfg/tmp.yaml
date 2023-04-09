@@ -1,4 +1,4 @@
-epochs: 100
+epochs: 40
 val_period: 2
 batch_size: 10
 
@@ -34,19 +34,20 @@ metrics: [
 
 optimizer:
     name: "adam"
-    lrs: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
-    weight_decays: [0, 0, 0, 0, 0, 0]
+    lrs: [0.01]
+    weight_decays: [0]
 
 # changes lrs depending on mean loss (mean of means per batch) of validation
 scheduler:
-    name: "reduce_on_plateau"
+    name: "step_lr"
     factor: 0.1
-    step_size: 5
+    step_size: 10
 
 # stops depending on target metric that have to be in metrics
 early_stopper:
     save_path: ${hydra:runtime.output_dir}
     target_metric: "soft_jaccard"
+    statistic: "mean"
     patience: 10
     delta: 0
 

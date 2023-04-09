@@ -52,15 +52,14 @@ def fit(epochs: int, val_period: int,
                         metric_values[metric_name] = torch.cat([metric_values[metric_name], metric_value])
                         # if metric is main then add to metric history
 
-            # count mean of history and take to a early stopper and scheduler
-            for metric_name in metrics:
-                metric_values[metric_name] = metric_values[metric_name].mean()
-
-            scheduler.step(loss_sum / n)
             early_stopper(metric_values, model)
+            scheduler.step(loss_sum / n)
 
             if early_stopper.early_stop:
                 break
+
+    # saving best params in model
+    model.load_state_dict(early_stopper.load_last_params())
 
 
 def cfg2fit(cfg, model, train_dataset: ImgMaskSet, val_dataset: ImgMaskSet):

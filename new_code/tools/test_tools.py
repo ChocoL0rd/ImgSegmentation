@@ -59,5 +59,5 @@ def cfg2test(cfg, model, dataset: ImgMaskSet):
     results["img"] = dataset.get_img_list()
     res_df = pd.DataFrame(results)
     res_df.to_excel(os.path.join(data_save_path, "full_results.xlsx"), index=False)
-    res_df.describe().to_excel(os.path.join(data_save_path, "descr_results.xlsx"), index=False)
+    res_df.describe().to_excel(os.path.join(data_save_path, "descr_results.xlsx"))
 

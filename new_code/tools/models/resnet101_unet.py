@@ -56,7 +56,7 @@ class ResNet101UNet(nn.Module):
         self.decoder_params = []
         for i in range(5):
             if cfg.freeze_decoder[i]:
-                for param in self.decoder[i].parameters():
+                for param in self.decoder[f"upsample{i}"].parameters():
                     param.requires_grad = False
             else:
                 self.decoder_params.append(

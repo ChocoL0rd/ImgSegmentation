@@ -6,7 +6,8 @@ defaults:
   - _self_
   - train_cfg: tmp
   - test_cfg: tmp
-  - model_cfg: resnet101_unet
+#  - model_cfg: resnet101_unet
+  - model_cfg: cru
   - dataset_cfg: tmp
 
 

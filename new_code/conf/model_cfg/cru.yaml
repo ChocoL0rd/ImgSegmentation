@@ -1,0 +1,49 @@
+load_pretrained: False
+
+name: "cru"
+device: ${device}
+
+pretrained_backbone: True
+freeze_encoder: [True, True, True, True, True]
+
+decoders:
+  - load_pretrained: True
+    pretrained_path: outputs/2023-04-07/16-28-23
+    device: ${device}
+
+    name: "resnet101_unet"
+    pretrained_backbone: True
+
+    # decoder
+    up_chnls: [ 512, 256, 128, 64, 32 ]
+    use_bn: [ True, True, True, True, True ] # use batch norms
+    drop_values: [ 0, 0, 0, 0, 0 ]
+    modes: [ "bilinear", "bilinear", "bilinear", "bilinear", "bilinear" ] # upsampling modes
+
+    # returns in get_params, what is not frozen
+    freeze_encoder: [ True, True, True, True, True ]
+    freeze_decoder: [ True, True, True, True, True ]
+    freeze_final_conv: True
+
+# ======================================================================================================
+
+  - load_pretrained: True
+    pretrained_path: outputs/2023-04-07/17-56-41
+    device: ${device}
+
+    name: "resnet101_unet"
+    pretrained_backbone: True
+
+    # decoder
+    up_chnls: [ 512, 256, 128, 64, 32 ]
+    use_bn: [ True, True, True, True, True ] # use batch norms
+    drop_values: [ 0, 0, 0, 0, 0 ]
+    modes: [ "bilinear", "bilinear", "bilinear", "bilinear", "bilinear" ] # upsampling modes
+
+    # returns in get_params, what is not frozen
+    freeze_encoder: [ True, True, True, True, True ]
+    freeze_decoder: [ True, True, True, True, True ]
+    freeze_final_conv: True
+
+
+freeze_final_conv: False
