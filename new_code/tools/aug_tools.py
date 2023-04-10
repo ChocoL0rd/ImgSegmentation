@@ -18,6 +18,7 @@ from albumentations.augmentations.geometric.rotate import RandomRotate90
 from albumentations.augmentations.transforms import Normalize
 from albumentations.augmentations.geometric.rotate import Rotate
 from albumentations.augmentations.crops.transforms import RandomResizedCrop
+from albumentations.augmentations.transforms import RGBShift
 
 import logging
 
@@ -105,6 +106,14 @@ def cfg2mini_trfm(cfg):
             height=cfg.height,
             width=cfg.width,
             scale=[cfg.min_scale, cfg.max_scale],
+            always_apply=cfg.always_apply,
+            p=cfg.p
+        )
+    elif name == "rgb_shift":
+        trfm = RGBShift(
+            r_shift_limit=cfg.r_shift_limit,
+            g_shift_limit=cfg.g_shift_limit,
+            b_shift_limit=cfg.b_shift_limit,
             always_apply=cfg.always_apply,
             p=cfg.p
         )

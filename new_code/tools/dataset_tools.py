@@ -92,7 +92,13 @@ class ImgMaskSet(Dataset):
         mask_path = os.path.join(self.mask_dir_path, img_name + ".png")
 
         # read img and mask
-        original_img = cv.cvtColor(cv.imread(img_path), cv.COLOR_BGR2RGB)  # convert to RGB format
+        original_img = cv.imread(img_path)
+        if original_img is None:
+            msg = f"Wrong reading image {img_path}"
+            log.critical(msg)
+            raise Exception(msg)
+
+        original_img = cv.cvtColor(original_img, cv.COLOR_BGR2RGB)  # convert to RGB format
         img = original_img.copy()
 
         with Image.open(mask_path) as mask_im:

@@ -1,4 +1,4 @@
-comment: "start"
+comment: "Attempt"
 
 device: cuda:0
 
@@ -6,8 +6,9 @@ defaults:
   - _self_
   - train_cfg: tmp
   - test_cfg: tmp
-#  - model_cfg: resnet101_unet
-  - model_cfg: cru
+  - model_cfg: resnet101_unet
+#  - model_cfg: cru
+#  - model_cfg: ruf
   - dataset_cfg: tmp
-
+#  - dataset_cfg: strong_aug
 

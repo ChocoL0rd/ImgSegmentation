@@ -1,0 +1,49 @@
+заменю на соответствующие старые в валидации
+в трэйне уберу (которые точно совпадают)
+
+"img4_001.jpeg",
+"img4_002.jpeg",
+"img4_003.jpeg", img1_033.jpeg 
+"img4_004.jpeg", img2_026.jpeg
+"img4_005.jpeg", img2_029.jpeg
+"img4_006.jpeg",
+"img4_007.jpeg",
+"img3_002.jpeg", img2_022.jpeg - оч похоже, но не оно
+"img3_024.jpeg", 
+"img3_019.jpeg", 
+"img3_039.jpeg", 
+"img3_022.jpeg", 
+"img3_020.jpeg", 
+"img3_036.jpeg", 
+"img3_023.jpeg", 
+"img3_001.jpeg", - img2_004.jpeg
+"img3_038.jpeg", 
+"img3_009.jpeg", 
+"img3_003.jpeg", 
+"img3_011.jpeg", 
+"img3_018.jpeg", 
+"img3_034.jpeg", 
+"img3_004.jpeg", 
+"img3_008.jpeg", 
+"img3_010.jpeg", 
+"img3_015.jpeg", 
+"img3_031.jpeg", 
+"img3_013.jpeg", 
+"img3_017.jpeg", 
+"img3_016.jpeg", 
+"img3_021.jpeg", 
+"img3_037.jpeg", 
+"img3_035.jpeg", 
+"img3_033.jpeg", img2_055.jpeg
+"img3_005.jpeg", 
+"img3_032.jpeg", 
+"img3_014.jpeg", 
+"img3_028.jpeg", img2_050.jpeg
+"img3_026.jpeg", 
+"img3_007.jpeg", 
+"img3_030.jpeg", 
+"img3_027.jpeg", 
+"img3_012.jpeg", 
+"img3_029.jpeg", 
+"img3_006.jpeg", 
+"img3_025.jpeg"

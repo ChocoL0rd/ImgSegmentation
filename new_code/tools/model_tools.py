@@ -1,6 +1,8 @@
 # Here all models and their names are contained
 from .models.resnet101_unet import ResNet101UNet
 from .models.cru import CRU
+from .models.ruf import RUF
+
 import torch
 import os
 
@@ -11,7 +13,8 @@ __all__ = [
 # model_name: model
 name2model_class = {
     "resnet101_unet": ResNet101UNet,
-    "cru": CRU
+    "cru": CRU,
+    "ruf": RUF
 }
 
 

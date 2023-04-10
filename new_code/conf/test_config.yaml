@@ -1,0 +1,13 @@
+comment: "start"
+
+device: cuda:0
+
+defaults:
+  - _self_
+  - test_cfg: tmp
+  - model_cfg: resnet101_unet
+#  - model_cfg: cru
+#  - model_cfg: ruf
+  - dataset_cfg: tmp
+
+

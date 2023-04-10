@@ -1,5 +1,14 @@
 import torch
 from torch import nn
+from torch.nn.functional import avg_pool2d
+
+bce = nn.BCELoss(reduction="none")
+
+
+def avg_bce(x, y):
+    x = avg_pool2d(x, kernel_size=2, stride=2, padding=0)
+    y = avg_pool2d(y, kernel_size=2, stride=2, padding=0)
+    return bce(x, y)
 
 
 def soft_dice(x, y):
@@ -47,5 +56,5 @@ name2func = {
     "inv_soft_jaccard": inv_soft_jaccard,
     "inv_neg_ln_jaccard": inv_neg_ln_jaccard,
 
-    "bce": nn.BCELoss(reduction="none")
+    "bce": bce
 }

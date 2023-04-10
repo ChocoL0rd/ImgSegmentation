@@ -1,7 +1,9 @@
 device: ${device}
 
 # path to a file that contains name of imgs for validation and train
-path: ${hydra:runtime.cwd}/../datasets/basic_datasets.json
+#path: ${hydra:runtime.cwd}/../datasets/basic_datasets.json
+path: ${hydra:runtime.cwd}/../datasets/full_data.json
+
 
 # contains methods of changing train and validation according some previous results
 filter: {

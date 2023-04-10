@@ -1,5 +1,7 @@
 load_pretrained: False
-#pretrained_path:
+#pretrained_path: "outputs/2023-04-07/17-56-41"
+#pretrained_path: "outputs/2023-04-10/11-50-17"
+
 device: ${device}
 
 name: "resnet101_unet"
