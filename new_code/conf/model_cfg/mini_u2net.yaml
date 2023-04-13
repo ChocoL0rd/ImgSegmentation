@@ -1,0 +1,8 @@
+name: "mini_u2net"
+device: ${device}
+
+load_pretrained: True
+pretrained_path: outputs/2023-04-11/17-13-13
+
+out_ch: 1
+

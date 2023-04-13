@@ -1,0 +1,11 @@
+load_pretrained: False
+device: ${device}
+
+name: "resnet_u2net3"
+pretrained_backbone: True
+
+# returns in get_params, what is not frozen
+freeze_resnet_encoder: [True, True, True, True, True]
+freeze_u2net_encoder: [False, False, False, False, False]
+freeze_decoder: [False, False, False, False, False]
+freeze_final_conv: False

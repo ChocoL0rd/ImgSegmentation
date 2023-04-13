@@ -45,6 +45,44 @@ def inv_neg_ln_jaccard(x, y):
     return -torch.log(inv_soft_jaccard(x, y))
 
 
+def u2net_bce(x, y):
+    l = 0
+    for i in x:
+        l += bce(i, y)
+    return l / len(x)
+
+
+def u2net_soft_jaccard(x, y):
+    l = 0
+    for i in x:
+        l += soft_jaccard(i, y)
+    return l / len(x)
+
+
+def u2net_inv_soft_jaccard(x, y):
+    l = 0
+    for i in x:
+        l += inv_soft_jaccard(i, y)
+
+    return l / len(x)
+
+
+def u2net_neg_ln_dice(x, y):
+    l = 0
+    for i in x:
+        l += neg_ln_dice(i, y)
+
+    return l / len(x)
+
+
+def u2net_inv_neg_ln_dice(x, y):
+    l = 0
+    for i in x:
+        l += inv_neg_ln_dice(i, y)
+
+    return l / len(x)
+
+
 name2func = {
     "soft_dice": lambda x, y: 1 - soft_dice(x, y),
     "neg_ln_dice": neg_ln_dice,
@@ -56,5 +94,11 @@ name2func = {
     "inv_soft_jaccard": inv_soft_jaccard,
     "inv_neg_ln_jaccard": inv_neg_ln_jaccard,
 
-    "bce": bce
+    "bce": bce,
+
+    "u2net_bce": u2net_bce,
+    "u2net_soft_jaccard": u2net_soft_jaccard,
+    "u2net_inv_soft_jaccard": u2net_inv_soft_jaccard,
+    "u2net_neg_ln_dice": u2net_neg_ln_dice,
+    "u2net_inv_neg_ln_dice": u2net_inv_neg_ln_dice,
 }
