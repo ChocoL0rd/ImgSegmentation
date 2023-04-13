@@ -1,0 +1,153 @@
+device: ${device}
+
+# path to a file that contains name of imgs for validation and train
+path: ${hydra:runtime.cwd}/../datasets/basic_datasets.json
+#path: ${hydra:runtime.cwd}/../datasets/full_data.json
+
+
+# contains methods of changing train and validation according some previous results
+filter: {
+  name: pass
+}
+
+# augmentation (is not used during the test)
+# background transformation
+bgr_trfm: [
+  {
+    name: rgb_shift,
+    r_shift_limit: 255,
+    g_shift_limit: 255,
+    b_shift_limit: 255,
+    always_apply: False,
+    p: 0.5
+  },
+]
+
+# foreground transformation
+fgr_trfm: [
+  {
+    name: pixel_dropout,
+    dropout_prob: 0.005,
+    per_channel: False,
+    drop_value: 0,
+    p: 0.03
+  },
+  {
+    name: coarse_dropout,
+    max_holes: 5,
+    max_height: 3,
+    max_width: 20,
+    fill_value: 0,
+    p: 0.03
+  },
+  {
+    name: coarse_dropout,
+    max_holes: 5,
+    max_height: 20,
+    max_width: 3,
+    fill_value: 0,
+    p: 0.03
+  },
+  {
+    name: coarse_dropout,
+    max_holes: 5,
+    max_height: 5,
+    max_width: 5,
+    fill_value: 0,
+    p: 0.03
+  },
+  {
+    name: rgb_shift,
+    r_shift_limit: 20,
+    g_shift_limit: 20,
+    b_shift_limit: 20,
+    always_apply: False,
+    p: 0.5
+  },
+  {
+    name: pixel_dropout,
+    dropout_prob: 0.005,
+    per_channel: False,
+    drop_value: 0,
+    p: 0.03
+  },
+  {
+    name: coarse_dropout,
+    max_holes: 5,
+    max_height: 3,
+    max_width: 20,
+    fill_value: 0,
+    p: 0.03
+  },
+  {
+    name: coarse_dropout,
+    max_holes: 5,
+    max_height: 20,
+    max_width: 3,
+    fill_value: 0,
+    p: 0.03
+  },
+  {
+    name: coarse_dropout,
+    max_holes: 5,
+    max_height: 5,
+    max_width: 5,
+    fill_value: 0,
+    p: 0.03
+  }
+]
+
+# transformations applied to the whole image after two previous
+trfm: [
+  {
+    name: color_jitter,
+    brightness: 0,
+    contrast: 0.3,
+    saturation: 0.3,
+    p: 0.3
+  },
+  {
+    name: channel_dropout,
+    p: 0.5,
+  },
+  {
+    name: channel_shuffle,
+    p: 0.3
+  },
+  {
+    name: vertical_flip,
+    p: 0.3
+  },
+  {
+    name: horizontal_flip,
+    p: 0.3
+  },
+  {
+    name: to_gray,
+    p: 0.2
+  },
+  {
+    name: rotate,
+    always_apply: False,
+    p: 0.5
+  },
+  {
+    name: "random_resized_crop",
+    height: 330,
+    width: 330,
+    min_scale: 0.7,
+    max_scale: 1,
+    always_apply: True,
+    p: 1
+  },
+]
+
+# preprocessing that applied after augmentations and keeps applied during the test
+preproc: [
+  {
+    name: "normalize",
+    always_apply: True,
+    p: 1
+  }
+]
+

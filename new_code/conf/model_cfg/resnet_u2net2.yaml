@@ -1,7 +1,7 @@
 load_pretrained: False
 device: ${device}
 
-name: "resnet_u2net"
+name: "resnet_u2net2"
 pretrained_backbone: True
 
 # returns in get_params, what is not frozen
